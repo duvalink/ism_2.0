@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+
+
+    <title>Document</title>
+</head>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">INDUSTRIAL SHOP METALIC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">INICIO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('crear_cliente')}}">CLIENTES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('crear_contacto') }}">CONTACTOS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('consultas') }}">CONSULTA GRAL</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('consulta_cliente') }}">X CLIENTE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('presupuesto_contactos') }}">X CONTACTO</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block head %}{% endblock %}
+
+<body>
+    {% block body %}
+
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>

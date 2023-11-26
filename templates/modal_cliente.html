@@ -1,0 +1,47 @@
+<div class="modal fade" id="modalCliente{{dato.id_cliente}}" tabindex="-1" aria-labelledby="modalContactoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalContacto">Editar Contacto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('editar_cliente', id_cliente=dato.id_cliente)}}" method="POST">
+                    <div class="col col-12">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Nombre de la empresa"
+                                aria-label="nombre_cliente" name="nombre" value="{{dato.nombre}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-label="direccion" name="direccion"
+                                value="{{dato.direccion}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-label="cp" name="cp" value="{{dato.cp}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-label="ciudad" name="ciudad"
+                                value="{{dato.ciudad}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-label="telefono" name="telefono"
+                                value="{{dato.telefono}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-label="rfc" name="rfc" value="{{dato.rfc}}">
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary mt-1" value="Actualizar">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

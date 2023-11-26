@@ -1,0 +1,182 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+<div class="position-relative mb-5 mt-2">
+    <button type="button" class="btn btn-success position-absolute top-100 start-50 translate-middle btn-lg"
+        data-bs-toggle="modal" data-bs-target="#ModalPrincipal" data-bs-whatever="@mdo">
+        Agregar Partidas
+    </button>
+</div>
+
+<div class="modal fade" id="ModalPrincipal" tabindex="-1" aria-labelledby="ModalPrincipalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalPrincipalLabel">Nuevo Presupuesto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% include 'form.html' %}
+            </div>
+            <h2>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalEditar" tabindex="-1" aria-labelledby="ModalEditarlLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalEditarLabel">Nuevo Presupuesto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="presupuesto" class="top-70">
+    <div>
+        <h3">PRESUPUESTO #:<p style="color: red;">{{presupuesto.id_presupuesto}}</p>
+            </h3>
+    </div>
+
+
+    <table class="table table-dark table-hover table-bordered border-primary fs-4 top-70 start-0">
+        <thead style="text-align: center;">
+            <th>Partida</th>
+            <th style="width: 1000px;">Descripcion</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Importe</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+            {% for dato in partidas_db %}
+            <tr>
+                <td style="text-align: center;">{{dato.partida}}</td>
+                <td style="text-align: justify;">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
+                <td style="text-align: center;">{{dato.cantidad}}</td>
+                <td>$ {{'{:,.2f}'.format(dato.precio)}}</td>
+                <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
+                <td><a href="{{ url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}">Editar</a>
+                    | <a href="{{ url_for('borrar_partida', id_partida = dato.id_partida) }}"
+                        class="btn btn-danger">Borrar</a>
+                </td>
+
+                {% include 'form_edicion.html' %}
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: end;">Sub-Total</td>
+                <td>$ {{ '{:,.2f}'.format(presupuesto.subtotal) if presupuesto else '0.00' }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: end;">IVA</td>
+                <td>$ {{ '{:,.2f}'.format(presupuesto.iva) if presupuesto else '0.00' }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: end;">Total</td>
+                <td>$ {{ '{:,.2f}'.format(presupuesto.total) if presupuesto else '0.00' }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div>
+        <form action="/atencion" method="post" id="form-contactos">
+            {% if contactos %}
+            <h2>CLIENTE: {{presupuesto.cliente.nombre}}</h2>
+            <div class="row">
+                {% for contacto in contactos %}
+                <div class="col-2">
+                    <input class="big_checkbox" type="checkbox" name="contacto_id" value="{{contacto.id_contacto}}"
+                        id="contacto{{contacto.id_contacto}}">
+                    <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
+                </div>
+                {% if loop.index is divisibleby 5 %}
+            </div>
+            <div class="row">
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>Selecciona un cliente en el formulario para mostrar los contactos</p>
+            {% endif %}
+            <div class="container mt-5">
+                <div class="col-sm-10 g-2">
+                    <label for="mensaje_correo" class="form-label fs-4">Mensaje de correo:</label>
+                    <input type="text" class="form-control fs-3" name="mensaje_correo" id="mensaje_correo"
+                        style="text-transform: uppercase; background-color: #D6EAF8;">
+                    <div class="col-12 text-center mt-3">
+                        <input type="submit" value="ENVIAR" id="btn-enviar" class="btn btn-success btn-lg col-6" disabled>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <br>
+    <a href="{{ url_for('cerrar') }}" class="btn btn-danger" id="cerrar-btn">Cerrar</a>
+    <!-- 
+    <a href="{{ url_for('generar_pdf', presupuesto_id=presupuesto.id_presupuesto) if presupuesto else '#' }}"
+        class="btn btn-success" {{ 'disabled' if not presupuesto }}>PDF</a> -->
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/operaciones_mat.js') }}"></script>
+
+<script>
+    // FUNCION PARA COLOREAR A ROJO CUANDO SE SELECCIONA UN CHECKBOX
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                var label = document.querySelector('label[for="' + this.id + '"]');
+                if (this.checked) {
+                    label.classList.add('selected');
+                } else {
+                    label.classList.remove('selected');
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#form-contactos').on('submit', function (e) {
+            if ($('input[type=checkbox]:checked').length === 0) {
+                e.preventDefault();
+                alert('Por favor, selecciona al menos un contacto.');
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        // Deshabilita el botón de envío si no hay checkboxes seleccionados
+        function updateSubmitButton() {
+            if ($('#form-contactos input[type=checkbox]:checked').length === 0 || $('#mensaje_correo').val() === '') {
+                $('#btn-enviar').prop('disabled', true);
+            } else {
+                $('#btn-enviar').prop('disabled', false);
+            }
+        }
+
+        // Actualiza el estado del botón de envío cuando se selecciona o se deselecciona un checkbox
+        $('#form-contactos input[type=checkbox]').on('change', updateSubmitButton);
+        $('#mensaje_correo').on('input', updateSubmitButton);
+
+        // Actualiza el estado del botón de envío al cargar la página
+        updateSubmitButton();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1>CONSULTA DE PRESUPUESTOS POR CLIENTE</h1>
+    <form action="{{url_for('consulta_cliente')}}" method="post">
+        <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <select class="form-control fs-4" name="cliente" id="cliente">
+                <option value="">Seleccione un cliente</option>
+                {% for cliente in listar_clientes %}
+                <option value="{{cliente.id_cliente}}">{{cliente.nombre}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        </div>
+    </form>
+    <h2>CLIENTE: {{ nombre_cliente}}</h2>
+    <table class="table table-bordered table-hover fs-3">
+        <thead class="table-dark">
+            <th>#</th>
+            <th>FECHA</th>
+            <th>SUBTOTAL</th>
+            <th>IVA</th>
+            <th>TOTAL</th>
+            <th>ACCIONES</th>
+        </thead>
+        <tbody>
+            {% for dato in presupuestos %}
+            <tr>
+                <td>{{dato.id_presupuesto}}</td>
+                <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>
+                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
+                        class="btn btn-primary">Ver</a>
+                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto) }}" class="btn btn-success">REMISION</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

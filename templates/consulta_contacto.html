@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-4 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{url_for('presupuesto_contactos')}}" method="post">
+                        <div class="form-group">
+                            <label for="cliente">Cliente</label>
+                            <select class="form-control" name="cliente" id="cliente">
+                                <option value="">Seleccione un cliente</option>
+                                {% for cliente in listar_clientes %}
+                                <option value="{{cliente.id_cliente}}">{{cliente.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Buscar Contactos</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    {% if listar_contactos %}
+                    <form action="{{url_for('consulta_presupuesto_contacto')}}" method="post">
+                        <div class="form-group">
+                            <label for="contacto">Contacto</label>
+                            <select class="form-control" name="contacto" id="contacto">
+                                <option value="">Seleccione un contacto</option>
+                                {% for contacto in listar_contactos %}
+                                <option value="{{contacto.id_contacto}}">{{contacto.contacto}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Consultar</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>CONSULTA DE PRESUPUESTOS POR CONTACTO</h1>
+
+
+
+    {% if contacto %}
+    <h2>PRESUPUESTOS ENVIADOS A {{contacto.contacto}}</h2>
+    {% endif %}
+    <table class="table table-bordered table-hover fs-3">
+        <thead class="table-dark">
+            <th>#</th>
+            <th>FECHA</th>
+            <th>SUBTOTAL</th>
+            <th>IVA</th>
+            <th>TOTAL</th>
+            <th>ACCIONES</th>
+        </thead>
+        <tbody>
+            {% for dato in presupuestos %}
+            <tr>
+                <td>{{dato.id_presupuesto}}</td>
+                <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>
+                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}" class="btn btn-primary">Ver</a>
+                    <a href="{{url_for('remision', presupuesto_id=dato.id_presupuesto)}}" class="btn btn-success">Remision</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

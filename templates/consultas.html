@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <th>#</th>
+            <th>FECHA</th>
+            <th>CLIENTE</th>
+            <th>TOTAL</th>
+            <th>ACCIONES</th>
+        </thead>
+        <tbody>
+            {% for dato in presupuestos %}
+            <tr>
+                <td>{{dato.id_presupuesto}}</td>
+                <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
+                <td>{{dato.cliente.nombre}}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>
+                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
+                        class="btn btn-primary">Ver</a>
+<!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
+                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
+                        class="btn btn-success">Remision</a>
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <form action="{{ url_for('crear_contacto')}}" method="POST">
+        <div class="row">
+            <div class="col col-3">
+                <input type="text" class="form-control" placeholder="Nombre del Contacto" aria-label="nombre_contacto"
+                    name="nombre_contacto" required>
+            </div>
+            <div class="col col-3">
+                <input type="text" class="form-control" placeholder="Correo Electronico" aria-label="correo"
+                    name="correo" required>
+            </div>
+            <div class="col col-4">
+                <select class="form-select mb-3" aria-label="Large select example" name="cliente">
+                    <option selected>Selecciona Cliente</option>
+                    {% for dato in listar_clientes %}
+                    <option value="{{dato.id_cliente}}">{{dato.nombre}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <input type="submit" class="btn btn-primary mt-1" value="Registrar">
+            </div>
+        </div>
+    </form>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <th>ID</th>
+            <th>NOMBRE CONTACTO</th>
+            <th>CORREO</th>
+            <th>EMPRESA</th>
+            <th>ACCIONES</th>
+        </thead>
+        <tbody>
+            {% for dato in listar_contactos %}
+            <tr>
+                <td>{{dato.id_contacto}}</td>
+                <td>{{dato.contacto}}</td>
+                <td>{{dato.correo}}</td>
+                <td>{{dato.cliente.nombre}}</td>
+                <td><a href="{{ url_for('editar_contacto', id_contacto = dato.id_contacto) }}" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#modalContacto{{dato.id_contacto}}">Editar</a> |
+                    <a href="{{ url_for('borrar_contacto', id_contacto=dato.id_contacto) }}" class="btn btn-danger"
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar este contacto?')">Borrar</a>
+                </td>
+                {% include 'modal_contacto.html' %}
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

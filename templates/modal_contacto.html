@@ -1,0 +1,40 @@
+<div class="modal fade" id="modalContacto{{dato.id_contacto}}" tabindex="-1" aria-labelledby="modalContactoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalContacto">Editar Contacto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('editar_contacto', id_contacto=dato.id_contacto)}}" method="POST">
+                    <div class="col col-12">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Nombre del Contacto"
+                                aria-label="nombre_contacto" name="nombre_contacto" value="{{dato.contacto}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Correo Electronico" aria-label="correo"
+                                name="correo" value="{{dato.correo}}">
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select mb-3" aria-label="Large select example" name="cliente">
+                                <option selected>Selecciona Cliente</option>
+                                {% for datos in listar_clientes %}
+                                <option value="{{datos.id_cliente}}" {% if datos.id_cliente==dato.cliente_id %} selected
+                                    {% endif %}>{{datos.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary mt-1" value="Actualizar">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

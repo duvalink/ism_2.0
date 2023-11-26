@@ -1,0 +1,54 @@
+.big_checkbox {
+    transform: scale(1.5);
+    margin-left: 10px;
+    cursor: pointer;
+
+}
+
+/* Oculta el checkbox original */
+.big_checkbox {
+    display: none;
+}
+
+/* Crea una caja para representar el checkbox */
+.big_checkbox+label {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+}
+
+.big_checkbox+label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #000;
+    background: #fff;
+}
+
+/* Cambia el color de fondo del checkbox cuando se selecciona */
+.big_checkbox:checked+label:before {
+    background: #2ECC71;
+    /* Cambia esto al color que quieras */
+}
+
+/* Crea una palomita para representar el estado seleccionado del checkbox */
+.big_checkbox:checked+label:after {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    width: 8px;
+    height: 14px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+
+.selected {
+    color: red;
+    font-weight: bold;
+}

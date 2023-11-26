@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/" method="post">
+        <label for="nombre">Nombre:
+            <input type="text" name="nombre" id="nombre" autofocus>
+        </label>
+        <br>
+        <label for="correo">Correo:
+            <input type="email" name="correo" id="correo">
+        </label>
+        <br>
+        <label for="pais">Pais
+            <input type="text" name="pais" id="pais">
+        </label>
+        <br>
+        <input type="submit" value="Registrar">
+    </form>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>CORREO</th>
+            <th>PAIS</th>
+        </thead>
+        <tbody>
+            {%for dato in registros%}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{dato.nombre}}</td>
+                <td>{{dato.correo}}</td>
+                <td>{{dato.pais}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</body>
+
+</html>
