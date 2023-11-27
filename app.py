@@ -7,7 +7,7 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
-
+    # USO DE VARIABLES DE ENTORNO
     db_user = os.getenv("DB_USER")
     db_pass = os.getenv("DB_PASS")
     db_server = os.getenv("DB_SERVER")
