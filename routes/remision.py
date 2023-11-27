@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, url_for, request, send_file
+from dotenv import load_dotenv
 import os
 import webbrowser
 from io import BytesIO
@@ -23,6 +24,8 @@ from models.presupuesto import Presupuesto as PresupuestoModel
 from models.atencion import PresupuestoContacto
 from utils.db import db
 import locale
+
+load_dotenv()
 
 pdf = Blueprint("pdf", __name__)
 
@@ -137,13 +140,11 @@ class Pdf:
 
     def datos_ism(self):
         # Datos de la empresa
-        ism_nombre = "INDUSTRIAL SHOP METALIC"
-        ism_rfc = "RFC: ISM-210913-PS5"
-        ism_direccion = (
-            "AV RIO ATOYAC #2477, GONZALEZ ORTEGA, CP 21397, MEXICALI, BAJA CALIFORNIA"
-        )
-        ism_telefono = "TELS. (686) 562-63-69, CEL. (686) 223-21-70"
-        documento_tipo = "REMISION"
+        ism_nombre = os.getenv("ISM_NOMBRE")
+        ism_rfc = os.getenv("ISM_RFC")
+        ism_direccion = os.getenv("ISM_DIRECCION")
+        ism_telefono = os.getenv("ISM_TELEFONO")
+        documento_tipo = os.getenv("DOCUMENTO_TIPO")
 
         return {
             "ism_nombre": ism_nombre,

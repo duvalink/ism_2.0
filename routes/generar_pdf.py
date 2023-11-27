@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, url_for, request
+from dotenv import load_dotenv
 import os
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
@@ -22,6 +23,8 @@ from models.presupuesto import Presupuesto as PresupuestoModel
 from models.atencion import PresupuestoContacto
 from utils.db import db
 import locale
+
+load_dotenv()
 
 pdf = Blueprint("pdf", __name__)
 
@@ -113,14 +116,12 @@ class Pdf:
             )
 
             # Verificar la longitud de descripcion_material
-            if len(descripcion_material)> 120 and len(descripcion_material) < 200:
+            if len(descripcion_material) > 120 and len(descripcion_material) < 200:
                 estilo_descripcion = styles["DescripcionStyleSmall"]
             else:
                 estilo_descripcion = styles["DescripcionStyle"]
 
-            descripcion = Paragraph(
-                descripcion_material, style=estilo_descripcion
-            )
+            descripcion = Paragraph(descripcion_material, style=estilo_descripcion)
             cantidad = partida["cantidad"]
             precio = partida["precio"]
             importe = partida["importe"]
@@ -138,13 +139,11 @@ class Pdf:
 
     def datos_ism(self):
         # Datos de la empresa
-        ism_nombre = "INDUSTRIAL SHOP METALIC"
-        ism_rfc = "RFC: ISM-210913-PS5"
-        ism_direccion = (
-            "AV RIO ATOYAC #2477, GONZALEZ ORTEGA, CP 21397, MEXICALI, BAJA CALIFORNIA"
-        )
-        ism_telefono = "TELS. (686) 562-63-69, CEL. (686) 223-21-70"
-        documento_tipo = "PRESUPUESTO"
+        ism_nombre = os.getenv("ISM_NOMBRE")
+        ism_rfc = os.getenv("ISM_RFC")
+        ism_direccion = os.getenv("ISM_DIRECCION")
+        ism_telefono = os.getenv("ISM_TELEFONO")
+        documento_tipo = os.getenv("DOCUMENTO_TIPO_R")
 
         return {
             "ism_nombre": ism_nombre,
@@ -378,7 +377,11 @@ class Pdf:
                         (5, 1),
                         "CENTER",
                     ),  # Alineación centrada del id_presupuesto
-                    ("SPAN", (1, 3), (4, 3)),  # Combinar celdas de la fila de atencion")
+                    (
+                        "SPAN",
+                        (1, 3),
+                        (4, 3),
+                    ),  # Combinar celdas de la fila de atencion")
                     # alignacion vertical centrada de la celda "Atencion"
                     ("VALIGN", (0, 3), (0, 3), "TOP"),
                 ]
@@ -552,7 +555,6 @@ class Pdf:
                     ("ALIGN", (7, 0), (7, 2), "RIGHT"),
                     # NEGRITA
                     ("FONTNAME", (7, 0), (7, 2), "Helvetica-Bold"),
-
                 ]
             )
         )
@@ -592,7 +594,9 @@ class Pdf:
         with open(ruta_pdf, "rb") as f:
             pdf_data = f.read()
 
-        return redirect(url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id))
+        return redirect(
+            url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
+        )
 
     def rutas(self):
         self.app.add_url_rule(
