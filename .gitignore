@@ -1,3 +1,4 @@
 .env
 presupuestos_pdf/*.pdf
 /*.pdf
+*.pyc
