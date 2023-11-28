@@ -88,19 +88,24 @@
     <div>
         <form action="/atencion" method="post">
             {% if contactos %}
-            {% for contacto in contactos %}
-            <div>
-                <input class="big_checkbox" type="checkbox" name="contacto_id" value="{{contacto.id_contacto}}"
-                    id="contacto{{contacto.id_contacto}}">
-                <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
+            <h2>CLIENTE: {{presupuesto.cliente.nombre}}</h2>
+            <div class="row">
+                {% for contacto in contactos %}
+                <div class="col-2">
+                    <input class="big_checkbox" type="checkbox" name="contacto_id" value="{{contacto.id_contacto}}"
+                        id="contacto{{contacto.id_contacto}}">
+                    <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>Selecciona un cliente en el formulario para mostrar los contactos</p>
+                {% endif %}
             </div>
-            {% endfor %}
-            {% else %}
-            <p>Selecciona un cliente en el formulario para mostrar los contactos</p>
-            {% endif %}
             <input type="submit" value="Enviar" class="btn btn-primary">
         </form>
     </div>
+
+</div>
 
 
 </div>
@@ -131,6 +136,3 @@
 </script>
 
 {% endblock %}
-
-
-
