@@ -14,6 +14,8 @@ load_dotenv()
 
 correo = Blueprint("correo", __name__)
 
+email_server = os.getenv("EMAIL_SERVER")
+email_server_port = os.getenv("EMAIL_SERVER_PORT")
 email_user = os.getenv("EMAIL_USER")
 email_pass = os.getenv("EMAIL_PASS")
 
@@ -43,8 +45,8 @@ class Correo:
             mensaje.attach(part)
 
     def enviar_correo(self, mensaje, destinatarios):
-        smtp_server = "smtp.office365.com"
-        puerto = 587
+        smtp_server = email_server
+        puerto = email_server_port
         usuario = email_user
         contrasena = email_pass
         try:
