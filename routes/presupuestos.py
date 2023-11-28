@@ -382,8 +382,33 @@ class Presupuesto:
         )
 
     def consultas(self):
-        presupuestos = PresupuestoModel.query.all()
-        return render_template("consultas.html", presupuestos=presupuestos)
+        page = request.args.get("page", 1, type=int)
+        fecha_busqueda = request.args.get("fecha_busqueda")
+        PER_PAGE = 50
+        query = PresupuestoModel.query
+
+        if fecha_busqueda:
+            year, month = map(int, fecha_busqueda.split("-"))
+            fecha_inicio = datetime(year, month, 1)
+            if month == 12:
+                fecha_fin = datetime(year + 1, 1, 1)
+            else:
+                fecha_fin = datetime(year, month + 1, 1)
+            query = query.filter(
+                PresupuestoModel.fecha >= fecha_inicio,
+                PresupuestoModel.fecha < fecha_fin,
+            )
+
+        total_presupuestos = query.count()
+        total_pages = (total_presupuestos - 1) // PER_PAGE + 1
+        presupuestos = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+
+        return render_template(
+            "consultas.html",
+            presupuestos=presupuestos,
+            total_pages=total_pages,
+            fecha_busqueda=fecha_busqueda,
+        )
 
     def consulta_cliente(self):
         listar_clientes = ClienteModel.query.all()
