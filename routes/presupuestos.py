@@ -383,12 +383,9 @@ class Presupuesto:
 
     def consultas(self):
         page = request.args.get("page", 1, type=int)
-
         PER_PAGE = 50
         query = PresupuestoModel.query
-
         fecha_busqueda, query = self.consultasPorFecha(query)
-
         total_presupuestos = query.count()
         total_pages = (total_presupuestos - 1) // PER_PAGE + 1
         presupuestos = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
