@@ -144,7 +144,7 @@ class Pdf:
         ism_rfc = os.getenv("ISM_RFC")
         ism_direccion = os.getenv("ISM_DIRECCION")
         ism_telefono = os.getenv("ISM_TELEFONO")
-        documento_tipo = os.getenv("DOCUMENTO_TIPO")
+        documento_tipo = os.getenv("DOCUMENTO_TIPO_R")
 
         return {
             "ism_nombre": ism_nombre,
