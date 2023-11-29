@@ -98,11 +98,20 @@
                     <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
                 </div>
                 {% endfor %}
-                {% else %}
-                <p>Selecciona un cliente en el formulario para mostrar los contactos</p>
-                {% endif %}
             </div>
-            <input type="submit" value="Enviar" class="btn btn-primary">
+            {% else %}
+            <p>Selecciona un cliente en el formulario para mostrar los contactos</p>
+            {% endif %}
+            <div class="container mt-5">
+                <div class="col-sm-10 g-2">
+                    <label for="mensaje_correo" class="form-label fs-4">Mensaje de correo:</label>
+                    <input type="text" class="form-control fs-3" name="mensaje_correo" id="mensaje_correo"
+                        style="text-transform: uppercase; background-color: #D6EAF8;">
+                    <div class="col-12 text-center mt-3">
+                        <input type="submit" value="ENVIAR" id="btn-enviar" class="btn btn-success btn-lg col-4">
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 
