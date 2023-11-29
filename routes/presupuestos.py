@@ -322,10 +322,11 @@ class Presupuesto:
 
     def atencion(self):
         id_presupuesto = session.get("id_presupuesto")
-        contacto_ids = request.form.getlist("contacto_id")
+        # contacto_ids = request.form.getlist("contacto_id")
         mensaje = request.form.get("mensaje_correo")
-        print(mensaje)
-        print(contacto_ids)
+
+        self.confirmar_contactos_presupuesto(id_presupuesto)
+        contacto_ids = self.obtener_contactos_presupuesto(id_presupuesto)
 
         for id_contacto in contacto_ids:
             # Comprueba si el contacto ya está asociado al presupuesto
@@ -349,10 +350,40 @@ class Presupuesto:
         return redirect(url_for("generar_pdf", presupuesto_id=id_presupuesto))
 
     def obtener_contactos_presupuesto(self, id_presupuesto):
-        presupuesto_contactos = PresupuestoContacto.query.filter_by(presupuesto_id=id_presupuesto).all()
+        presupuesto_contactos = PresupuestoContacto.query.filter_by(
+            presupuesto_id=id_presupuesto
+        ).all()
         contactos_asignados = [pc.contacto_id for pc in presupuesto_contactos]
-        print (contactos_asignados)
+        print(contactos_asignados)
         return contactos_asignados
+
+    def confirmar_contactos_presupuesto(self, id_presupuesto):
+        contactos_seleccionados = request.form.getlist("contacto_id")
+        mensaje = request.form.get("mensaje_correo")
+
+        contactos_asignados = self.obtener_contactos_presupuesto(id_presupuesto)
+
+        contactos_agregados = [
+            id for id in contactos_seleccionados if id not in contactos_asignados
+        ]
+        contactos_eliminados = [
+            id for id in contactos_asignados if id not in contactos_seleccionados
+        ]
+
+        for id in contactos_agregados:
+            nuevo_contacto = PresupuestoContacto(
+                presupuesto_id=id_presupuesto, contacto_id=id, mensaje=mensaje
+            )
+            db.session.add(nuevo_contacto)
+
+        for id in contactos_eliminados:
+            contacto_a_eliminar = PresupuestoContacto.query.filter_by(
+                presupuesto_id=id_presupuesto, contacto_id=id
+            ).first()
+            if contacto_a_eliminar:
+                db.session.delete(contacto_a_eliminar)
+
+        db.session.commit()
 
     def consulta_presupuesto_contacto(self):
         listar_clientes = ClienteModel.query.all()
