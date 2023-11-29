@@ -93,7 +93,8 @@
                 {% for contacto in contactos %}
                 <div class="col-2">
                     <input class="big_checkbox" type="checkbox" name="contacto_id" value="{{contacto.id_contacto}}"
-                        id="contacto{{contacto.id_contacto}}">
+                        id="contacto{{contacto.id_contacto}}" {% if contacto.id_contacto in contactos_asignados %}
+                        checked {% endif %}>
                     <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
                 </div>
                 {% endfor %}
