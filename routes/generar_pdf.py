@@ -143,7 +143,7 @@ class Pdf:
         ism_rfc = os.getenv("ISM_RFC")
         ism_direccion = os.getenv("ISM_DIRECCION")
         ism_telefono = os.getenv("ISM_TELEFONO")
-        documento_tipo = os.getenv("DOCUMENTO_TIPO_R")
+        documento_tipo = os.getenv("DOCUMENTO_TIPO")
 
         return {
             "ism_nombre": ism_nombre,
@@ -553,6 +553,7 @@ class Pdf:
                     ("FONTSIZE", (3, 6), (3, 6), 8),
                     ("FONTNAME", (3, 6), (3, 6), "Helvetica-Bold"),
                     ("ALIGN", (7, 0), (7, 2), "RIGHT"),
+                    ("ALIGN", (6, 0), (6, 2), "RIGHT"),
                     # NEGRITA
                     ("FONTNAME", (7, 0), (7, 2), "Helvetica-Bold"),
                 ]
