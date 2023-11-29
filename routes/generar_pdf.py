@@ -249,7 +249,7 @@ class Pdf:
             contador = 1
 
             # Adjuntar el consecutivo al nombre base, en caso de que ya exista el archivo pdf
-            nuevo_nombre_archivo = f"P-{presupuesto_id}_({contador}).pdf"
+            nuevo_nombre_archivo = f"P-{presupuesto_id}_corregido({contador}).pdf"
             nueva_ruta_pdf = os.path.join(
                 os.getcwd(), "presupuestos_pdf", nuevo_nombre_archivo
             )
@@ -595,9 +595,11 @@ class Pdf:
         with open(ruta_pdf, "rb") as f:
             pdf_data = f.read()
 
-        return redirect(
-            url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
-        )
+        return redirect(url_for("cerrar"))
+
+        # return redirect(
+        #     url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
+        # )
 
     def rutas(self):
         self.app.add_url_rule(
