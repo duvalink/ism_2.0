@@ -348,6 +348,12 @@ class Presupuesto:
 
         return redirect(url_for("generar_pdf", presupuesto_id=id_presupuesto))
 
+    def obtener_contactos_presupuesto(self, id_presupuesto):
+        presupuesto_contactos = PresupuestoContacto.query.filter_by(presupuesto_id=id_presupuesto).all()
+        contactos_asignados = [pc.contacto_id for pc in presupuesto_contactos]
+        print (contactos_asignados)
+        return contactos_asignados
+
     def consulta_presupuesto_contacto(self):
         listar_clientes = ClienteModel.query.all()
         id_contacto = request.form.get("contacto")
@@ -370,6 +376,9 @@ class Presupuesto:
         # llamar a la funcion mostrar_contactos
         contactos = self.mostrar_contactos(cliente_id)
 
+        # obtener los contactos asignados al presupuesto
+        contactos_asignados = self.obtener_contactos_presupuesto(id_presupuesto)
+
         session["id_presupuesto"] = id_presupuesto
 
         return render_template(
@@ -379,6 +388,7 @@ class Presupuesto:
             partidas_db=partidas,
             cliente_id=cliente_id,
             contactos=contactos,
+            contactos_asignados=contactos_asignados,
         )
 
     def consultas(self):
