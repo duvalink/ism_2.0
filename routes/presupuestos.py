@@ -455,9 +455,15 @@ class Presupuesto:
         return fecha_busqueda, query
 
     def consulta_cliente(self):
+        page = request.args.get("page", 1, type=int)
+        id_cliente = request.args.get("cliente") or session.get("cliente_id")
+        session["cliente_id"] = id_cliente
+        PER_PAGE = 25
         listar_clientes = ClienteModel.query.all()
-        id_cliente = request.form.get("cliente")
-        presupuestos = PresupuestoModel.query.filter_by(cliente_id=id_cliente).all()
+        query = PresupuestoModel.query.filter_by(cliente_id=id_cliente)
+        total_presupuestos = query.count()
+        total_pages = (total_presupuestos - 1) // PER_PAGE + 1
+        presupuestos = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
         cliente_seleccionado = ClienteModel.query.get(id_cliente)
         nombre_cliente = cliente_seleccionado.nombre if cliente_seleccionado else ""
         print(id_cliente)
@@ -466,7 +472,11 @@ class Presupuesto:
             presupuestos=presupuestos,
             listar_clientes=listar_clientes,
             nombre_cliente=nombre_cliente,
+            total_pages=total_pages,
+            id_cliente=id_cliente,
         )
+    
+    
 
     def cerrar(self):
         session.clear()
