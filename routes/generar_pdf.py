@@ -116,7 +116,7 @@ class Pdf:
             )
 
             # Verificar la longitud de descripcion_material
-            if len(descripcion_material) > 120 and len(descripcion_material) < 400:
+            if len(descripcion_material) > 120 and len(descripcion_material) < 1000:
                 estilo_descripcion = styles["DescripcionStyleSmall"]
             else:
                 estilo_descripcion = styles["DescripcionStyle"]
