@@ -422,20 +422,22 @@ class Presupuesto:
             contactos_asignados=contactos_asignados,
         )
 
-    def consultas(self):
+    def query_paginado(self, query, per_page):
         page = request.args.get("page", 1, type=int)
-        PER_PAGE = 50
+        total_presupuestos = query.count()
+        total_pages = (total_presupuestos - 1) // per_page + 1
+        presupuestos = query.paginate(page=page, per_page=per_page, error_out=False)
+        return presupuestos, total_pages
+
+    def consultas(self):
         query = PresupuestoModel.query
         fecha_busqueda, query = self.consultasPorFecha(query)
-        total_presupuestos = query.count()
-        total_pages = (total_presupuestos - 1) // PER_PAGE + 1
-        presupuestos = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
-
+        presupuestos, total_pages = self.query_paginado(query, 25)
         return render_template(
             "consultas.html",
             presupuestos=presupuestos,
-            total_pages=total_pages,
             fecha_busqueda=fecha_busqueda,
+            total_pages=total_pages,
         )
 
     def consultasPorFecha(self, query):
@@ -455,18 +457,14 @@ class Presupuesto:
         return fecha_busqueda, query
 
     def consulta_cliente(self):
-        page = request.args.get("page", 1, type=int)
         id_cliente = request.args.get("cliente") or session.get("cliente_id")
         session["cliente_id"] = id_cliente
-        PER_PAGE = 25
         listar_clientes = ClienteModel.query.all()
         query = PresupuestoModel.query.filter_by(cliente_id=id_cliente)
-        total_presupuestos = query.count()
-        total_pages = (total_presupuestos - 1) // PER_PAGE + 1
-        presupuestos = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
         cliente_seleccionado = ClienteModel.query.get(id_cliente)
         nombre_cliente = cliente_seleccionado.nombre if cliente_seleccionado else ""
         print(id_cliente)
+        presupuestos, total_pages = self.query_paginado(query, per_page=25)
         return render_template(
             "consulta_cliente.html",
             presupuestos=presupuestos,
@@ -475,8 +473,6 @@ class Presupuesto:
             total_pages=total_pages,
             id_cliente=id_cliente,
         )
-    
-    
 
     def cerrar(self):
         session.clear()
