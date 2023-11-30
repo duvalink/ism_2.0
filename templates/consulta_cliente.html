@@ -7,7 +7,7 @@
 {% block body %}
 <div class="container">
     <h1>CONSULTA DE PRESUPUESTOS POR CLIENTE</h1>
-    <form action="{{url_for('consulta_cliente')}}" method="post">
+    <form action="{{url_for('consulta_cliente')}}" method="get">
         <div class="form-group">
             <label for="cliente">Cliente</label>
             <select class="form-control fs-4" name="cliente" id="cliente">
@@ -22,6 +22,23 @@
         </div>
     </form>
     <h2>CLIENTE: {{ nombre_cliente}}</h2>
+    <div class="d-flex justify-content-between my-3">
+        {% if presupuestos.has_prev %}
+        <a href="{{ url_for('consulta_cliente', page=1, cliente=id_cliente) }}" class="btn btn-primary">Primeros
+            registros</a>
+        <a href="{{ url_for('consulta_cliente', page=presupuestos.prev_num, cliente=id_cliente) }}"
+            class="btn btn-primary">Anterior</a>
+        {% else %}
+        <div></div> <!-- Placeholder for spacing -->
+        {% endif %}
+        {% if presupuestos.has_next %}
+        <a href="{{ url_for('consulta_cliente', page=presupuestos.next_num, cliente=id_cliente) }}"
+            class="btn btn-primary">Siguiente</a>
+        <a href="{{ url_for('consulta_cliente', page=total_pages, cliente=id_cliente) }}"
+            class="btn btn-primary">Registros
+            más recientes</a>
+        {% endif %}
+    </div>
     <table class="table table-bordered table-hover fs-3">
         <thead class="table-dark">
             <th>#</th>
@@ -42,12 +59,30 @@
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary">Ver</a>
-                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto) }}" class="btn btn-success">REMISION</a>
+                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto) }}"
+                        class="btn btn-success">REMISION</a>
 
                 </td>
             </tr>
             {% endfor %}
     </table>
+    <div class="d-flex justify-content-between my-3">
+        {% if presupuestos.has_prev %}
+        <a href="{{ url_for('consulta_cliente', page=1, cliente=id_cliente) }}" class="btn btn-primary">Primeros
+            registros</a>
+        <a href="{{ url_for('consulta_cliente', page=presupuestos.prev_num, cliente=id_cliente) }}"
+            class="btn btn-primary">Anterior</a>
+        {% else %}
+        <div></div> <!-- Placeholder for spacing -->
+        {% endif %}
+        {% if presupuestos.has_next %}
+        <a href="{{ url_for('consulta_cliente', page=presupuestos.next_num, cliente=id_cliente) }}"
+            class="btn btn-primary">Siguiente</a>
+        <a href="{{ url_for('consulta_cliente', page=total_pages, cliente=id_cliente) }}"
+            class="btn btn-primary">Registros
+            más recientes</a>
+        {% endif %}
+    </div>
 </div>
 
 
