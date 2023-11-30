@@ -40,9 +40,9 @@
                 <td>{{dato.telefono}}</td>
                 <td>{{dato.rfc}}</td>
                 <td><a class="btn btn-primary" href="{{ url_for('editar_cliente', id_cliente = dato.id_cliente) }}"
-                        data-bs-toggle="modal" data-bs-target="#modalCliente{{dato.id_cliente}}">Editar</a>|
+                        data-bs-toggle="modal" data-bs-target="#modalCliente{{dato.id_cliente}}"><i class="fas fa-edit"></i></a>|
                     <a class="btn btn-danger" href="{{ url_for('borrar_cliente', id_cliente = dato.id_cliente) }}"
-                        onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">Borrar</a>
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')"><i class="fas fa-trash"></i></a>
                 </td>
                 {% include 'modal_cliente.html' %}
 

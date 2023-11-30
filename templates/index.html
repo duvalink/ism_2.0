@@ -65,9 +65,9 @@
                 <td>$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
                 <td><a href="{{ url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
-                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}">Editar</a>
+                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}"><i class="fas fa-edit"></i></a>
                     | <a href="{{ url_for('borrar_partida', id_partida = dato.id_partida) }}"
-                        class="btn btn-danger">Borrar</a>
+                        class="btn btn-danger"><i class="fas fa-trash"></i></a>
                 </td>
 
                 {% include 'form_edicion.html' %}
