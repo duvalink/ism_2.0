@@ -7,6 +7,7 @@ from models.atencion import PresupuestoContacto
 from datetime import datetime
 from utils.db import db
 from flask import Blueprint
+import keyboard
 
 presupuestos = Blueprint("presupuestos", __name__)
 
@@ -508,6 +509,22 @@ class Presupuesto:
         for i, partida in enumerate(partidas, start=1):
             partida.partida = i
         db.session.commit()
+
+    def on_f7():
+        keyboard.write("°")
+        return "Symbol added"
+
+    def on_f8():
+        keyboard.write("#")
+        return "Symbol added"
+
+    def on_f9():
+        keyboard.write("Ø")
+        return "Symbol added"
+
+    keyboard.add_hotkey("f7", on_f7)
+    keyboard.add_hotkey("f8", on_f8)
+    keyboard.add_hotkey("f9", on_f9)
 
     def rutas(self):
         self.app.add_url_rule("/", "index", self.index, methods=["GET", "POST"])
