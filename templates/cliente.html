@@ -15,7 +15,6 @@
             </div>
             <div class="col col-1">
                 <input type="text" class="form-control" name="cp" placeholder="CP">
-
             </div>
             <div class="col">
                 <input type="text" class="form-control" name="ciudad" placeholder="Ciudad y Estado">
@@ -32,31 +31,49 @@
         </form>
     </div>
 
+    <style>
+        .col-id {
+            width: 5%;
+        }
+
+        .col-nombre {
+            width: 15%;
+        }
+
+        .col-ciudad {
+            width: 10%;
+        }
+
+        .col-acciones {
+            width: 10%;
+        }
+    </style>
+
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <th>ID</th>
-            <th>NOMBRE</th>
+            <th class="col-nombre">NOMBRE</th>
             <th>DIRECCION</th>
             <th>C. P.</th>
-            <th>CIUDAD</th>
+            <th class="col-ciudad">CIUDAD</th>
             <th>TELEFONO</th>
             <th>RFC</th>
-            <th>ACCIONES</th>
+            <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
             {% for dato in listar_clientes %}
             <tr>
-                <td>{{dato.id_cliente}}</td>
-                <td>{{dato.nombre}}</td>
-                <td>{{dato.direccion}}</td>
-                <td>{{dato.cp}}</td>
-                <td>{{dato.ciudad}}</td>
-                <td>{{dato.telefono}}</td>
-                <td>{{dato.rfc}}</td>
-                <td><a class="btn btn-primary" href="{{ url_for('editar_cliente', id_cliente = dato.id_cliente) }}"
-                        data-bs-toggle="modal" data-bs-target="#modalCliente{{dato.id_cliente}}"><i
-                            class="fas fa-edit"></i></a>|
-                    <a class="btn btn-danger" href="{{ url_for('borrar_cliente', id_cliente = dato.id_cliente) }}"
+                <td class="align-middle">{{dato.id_cliente}}</td>
+                <td class="align-middle">{{dato.nombre}}</td>
+                <td class="align-middle">{{dato.direccion}}</td>
+                <td class="align-middle">{{dato.cp}}</td>
+                <td class="align-middle">{{dato.ciudad}}</td>
+                <td class="align-middle">{{dato.telefono}}</td>
+                <td class="align-middle">{{dato.rfc}}</td>
+                <td class="align-middle"><a class="btn btn-primary"
+                        href="{{ url_for('editar_cliente', id_cliente = dato.id_cliente) }}" data-bs-toggle="modal"
+                        data-bs-target="#modalCliente{{dato.id_cliente}}"><i class="fas fa-edit"></i></a>|<a
+                        class="btn btn-danger" href="{{ url_for('borrar_cliente', id_cliente = dato.id_cliente) }}"
                         onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')"><i
                             class="fas fa-trash"></i></a>
                 </td>
