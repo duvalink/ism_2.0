@@ -5,17 +5,31 @@
 
 {% block body %}
 <div class="container">
-    <div class="mt-2 mb-5">
-        <form action="/crear_cliente" method="POST">
-            <input type="text" name="nombre" placeholder="Nombre del cliente">
-            <input type="text" name="direccion" placeholder="Direccion del cliente">
-            <input type="text" name="cp" placeholder="Codigo Postal">
-            <input type="text" name="ciudad" placeholder="Ciudad y Estado">
-            <input type="text" name="telefono" placeholder="Telefono">
-            <input type="text" name="rfc" placeholder="R. F. C.">
-            <input type="submit" class="btn btn-success mt-2" value="Registrar">
-        </form>
+    <div class="row">
+        <form action="/crear_cliente" method="POST" class="row g-1 mb-3">
+            <div class="col">
+                <input type="text" class="form-control" name="nombre" placeholder="Nombre del cliente">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="direccion" placeholder="Direccion del cliente">
+            </div>
+            <div class="col col-1">
+                <input type="text" class="form-control" name="cp" placeholder="CP">
 
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="ciudad" placeholder="Ciudad y Estado">
+            </div>
+            <div class="col col-2">
+                <input type="text" class="form-control" name="telefono" placeholder="Telefono">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="rfc" placeholder="R. F. C.">
+            </div>
+            <div class="col-12">
+                <input type="submit" class="btn btn-success mt-2" value="Registrar">
+            </div>
+        </form>
     </div>
 
     <table class="table table-bordered table-hover">
@@ -40,9 +54,11 @@
                 <td>{{dato.telefono}}</td>
                 <td>{{dato.rfc}}</td>
                 <td><a class="btn btn-primary" href="{{ url_for('editar_cliente', id_cliente = dato.id_cliente) }}"
-                        data-bs-toggle="modal" data-bs-target="#modalCliente{{dato.id_cliente}}"><i class="fas fa-edit"></i></a>|
+                        data-bs-toggle="modal" data-bs-target="#modalCliente{{dato.id_cliente}}"><i
+                            class="fas fa-edit"></i></a>|
                     <a class="btn btn-danger" href="{{ url_for('borrar_cliente', id_cliente = dato.id_cliente) }}"
-                        onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')"><i class="fas fa-trash"></i></a>
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')"><i
+                            class="fas fa-trash"></i></a>
                 </td>
                 {% include 'modal_cliente.html' %}
 
