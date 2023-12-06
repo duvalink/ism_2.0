@@ -56,15 +56,15 @@
         <tbody>
             {% for dato in partidas_db %}
             <tr>
-                <td style="text-align: center;">{{dato.partida}}</td>
+                <td style="text-align: center;" class="align-middle">{{dato.partida}}</td>
                 <td style="text-align: justify;">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
                 <td style="text-align: center;">{{dato.cantidad}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
-                <td><a href="{{url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
-                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}">Editar</a>|<a
+                <td class="align-middle" style="text-align: center;"><a href="{{url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}"><i class="fas fa-edit"></i></a>|<a
                         href="{{url_for('borrar_partida', id_partida=dato.id_partida) }}"
-                        class="btn btn-danger">Eliminar</a></td>
+                        class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
                 {% include 'form_edicion.html' %}
             </tr>
             {% endfor %}
