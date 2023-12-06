@@ -297,7 +297,7 @@ class Presupuesto:
         return contactos
 
     def presupuesto_contactos(self):
-        listar_clientes = ClienteModel.query.all()
+        listar_clientes, contacto = self.obtener_clientes_y_contactos()
         id_cliente = request.form.get("cliente")
         if id_cliente:
             cliente = ClienteModel.query.get(id_cliente)
@@ -308,11 +308,11 @@ class Presupuesto:
                     listar_clientes=listar_clientes,
                     listar_contactos=[],
                 )
-            contactos = cliente.contactos
+            contacto = cliente.contactos
             return render_template(
                 "consulta_contacto.html",
                 listar_clientes=listar_clientes,
-                listar_contactos=contactos,
+                listar_contactos=contacto,
             )
         else:
             return render_template(
@@ -387,9 +387,8 @@ class Presupuesto:
         db.session.commit()
 
     def consulta_presupuesto_contacto(self):
-        listar_clientes = ClienteModel.query.all()
-        id_contacto = request.form.get("contacto")
-        contacto = ContactoModel.query.get(id_contacto)
+        listar_clientes, contacto = self.obtener_clientes_y_contactos()
+        id_contacto = request.form.get("contacto") 
         presupuestos_contacto = PresupuestoContacto.query.filter_by(
             contacto_id=id_contacto
         ).all()
@@ -474,6 +473,12 @@ class Presupuesto:
             total_pages=total_pages,
             id_cliente=id_cliente,
         )
+
+    def obtener_clientes_y_contactos(self):
+        listar_clientes = ClienteModel.query.all()
+        id_contacto = request.form.get("contacto")
+        contacto = ContactoModel.query.get(id_contacto)
+        return listar_clientes, contacto
 
     def cerrar(self):
         session.clear()
