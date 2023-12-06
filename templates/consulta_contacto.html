@@ -80,8 +80,10 @@
                 <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
                 <td>
-                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}" class="btn btn-primary">Ver</a>
-                    <a href="{{url_for('remision', presupuesto_id=dato.id_presupuesto)}}" class="btn btn-success">Remision</a>
+                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
+                        class="btn btn-primary"><i class="fas fa-search"></i></a>
+                    <a href="{{url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
+                        class="btn btn-success">Remision</a>
 
                 </td>
             </tr>
