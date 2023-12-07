@@ -307,18 +307,21 @@ class Presupuesto:
                     "consulta_contacto.html",
                     listar_clientes=listar_clientes,
                     listar_contactos=[],
+                    presupuestos=[],
                 )
             contacto = cliente.contactos
             return render_template(
                 "consulta_contacto.html",
                 listar_clientes=listar_clientes,
                 listar_contactos=contacto,
+                presupuestos=[],
             )
         else:
             return render_template(
                 "consulta_contacto.html",
                 listar_clientes=listar_clientes,
                 listar_contactos=[],
+                presupuestos=[],
             )
 
     def atencion(self):
@@ -388,16 +391,20 @@ class Presupuesto:
 
     def consulta_presupuesto_contacto(self):
         listar_clientes, contacto = self.obtener_clientes_y_contactos()
-        id_contacto = request.form.get("contacto") 
-        presupuestos_contacto = PresupuestoContacto.query.filter_by(
-            contacto_id=id_contacto
-        ).all()
-        presupuestos = [pc.presupuesto for pc in presupuestos_contacto]
+        if request.method == "POST":
+            id_contacto = request.form.get("contacto", type=int)
+        else:
+            id_contacto = request.args.get("contacto", type=int)
+        page = request.args.get("page", 1, type=int)
+        query = PresupuestoContacto.query.filter_by(contacto_id=id_contacto)
+        presupuestos= query.paginate(page=page, per_page=10)
         return render_template(
             "consulta_contacto.html",
-            presupuestos=presupuestos,
+            presupuestos=presupuestos,  # Pasa el objeto paginado a tu plantilla
             listar_clientes=listar_clientes,
             contacto=contacto,
+            total_pages=presupuestos.pages,
+            id_contacto=id_contacto,
         )
 
     def consultar_presupuesto(self, id_presupuesto):
@@ -590,6 +597,13 @@ class Presupuesto:
             "/consulta_cliente",
             "consulta_cliente",
             self.consulta_cliente,
+            methods=["GET", "POST"],
+        )
+
+        self.app.add_url_rule(
+            "/consulta_presupuesto_contacto",
+            "consulta_presupuesto_contacto",
+            self.consulta_presupuesto_contacto,
             methods=["GET", "POST"],
         )
 
