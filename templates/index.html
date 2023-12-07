@@ -7,16 +7,15 @@
 {% block body %}
 <div class="position-relative mb-5 mt-2">
     <div class="mt-4">
-            <button type="button" class="btn btn-success position-absolute top-100 start-50 translate-middle btn-lg"
-        data-bs-toggle="modal" data-bs-target="#ModalPrincipal" data-bs-whatever="@mdo">
-        Agregar Partidas
-    </button>
-
+        <button type="button" class="btn btn-success position-absolute top-100 start-50 translate-middle btn-lg"
+            data-bs-toggle="modal" data-bs-target="#ModalPrincipal" data-bs-whatever="@mdo">
+            Agregar Partidas
+        </button>
     </div>
 </div>
 
 <div class="modal fade" id="ModalPrincipal" tabindex="-1" aria-labelledby="ModalPrincipalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="ModalPrincipalLabel">Nuevo Presupuesto</h1>
@@ -25,13 +24,11 @@
             <div class="modal-body">
                 {% include 'form.html' %}
             </div>
-            <h2>
-
         </div>
     </div>
 </div>
 <div class="modal fade" id="ModalEditar" tabindex="-1" aria-labelledby="ModalEditarlLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="ModalEditarLabel">Nuevo Presupuesto</h1>
@@ -68,9 +65,10 @@
                 <td>$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
                 <td><a href="{{ url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
-                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}"><i class="fas fa-edit"></i></a>
-                    | <a href="{{ url_for('borrar_partida', id_partida = dato.id_partida) }}"
-                        class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}"><i
+                            class="fas fa-edit"></i></a>
+                    | <a href="{{ url_for('borrar_partida', id_partida = dato.id_partida) }}" class="btn btn-danger"><i
+                            class="fas fa-trash"></i></a>
                 </td>
 
                 {% include 'form_edicion.html' %}
@@ -119,7 +117,8 @@
                     <input type="text" class="form-control fs-3" name="mensaje_correo" id="mensaje_correo"
                         style="text-transform: uppercase; background-color: #D6EAF8;">
                     <div class="col-12 text-center mt-3">
-                        <input type="submit" value="ENVIAR" id="btn-enviar" class="btn btn-success btn-lg col-6" disabled>
+                        <input type="submit" value="ENVIAR" id="btn-enviar" class="btn btn-success btn-lg col-6"
+                            disabled>
                     </div>
                 </div>
             </div>

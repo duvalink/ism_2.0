@@ -68,3 +68,8 @@
 .col-acciones {
     width: 10%;
 }
+
+.wide-textarea {
+    width: 100%;
+    /* height: 100px; */
+}
