@@ -61,6 +61,24 @@
     {% if contacto %}
     <h2>PRESUPUESTOS ENVIADOS A {{contacto.contacto}}</h2>
     {% endif %}
+    <div class="d-flex justify-content-between my-3">
+        {% if presupuestos.has_prev %}
+        <a href="{{ url_for('consulta_presupuesto_contacto', page=1, contacto=id_contacto) }}"
+            class="btn btn-primary">Primeros
+            registros</a>
+        <a href="{{ url_for('consulta_presupuesto_contacto', page=presupuestos.prev_num, contacto=id_contacto) }}"
+            class="btn btn-primary"><i class="fas fa-arrow-left"></i></a>
+        {% else %}
+        <div></div> <!-- Placeholder for spacing -->
+        {% endif %}
+        {% if presupuestos.has_next %}
+        <a href="{{ url_for('consulta_presupuesto_contacto', page=presupuestos.next_num, contacto=id_contacto) }}"
+            class="btn btn-primary"><i class="fas fa-arrow-right"></i></a>
+        <a href="{{ url_for('consulta_presupuesto_contacto', page=total_pages, contacto=id_contacto) }}"
+            class="btn btn-primary">Registros
+            más recientes</a>
+        {% endif %}
+    </div>
     <table class="table table-bordered table-hover fs-3">
         <thead class="table-dark">
             <th>#</th>
@@ -71,17 +89,17 @@
             <th>ACCIONES</th>
         </thead>
         <tbody>
-            {% for dato in presupuestos %}
+            {% for dato in presupuestos.items %}
             <tr>
-                <td>{{dato.id_presupuesto}}</td>
-                <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>{{dato.presupuesto.id_presupuesto}}</td>
+                <td>{{ dato.presupuesto.fecha.strftime('%d-%m-%Y') }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.presupuesto.subtotal) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.presupuesto.iva) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.presupuesto.total) if presupuestos else '0.00' }}</td>
                 <td>
-                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
+                    <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.presupuesto.id_presupuesto)}}"
                         class="btn btn-primary"><i class="fas fa-search"></i></a>
-                    <a href="{{url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
+                    <a href="{{url_for('remision', presupuesto_id=dato.presupuesto.id_presupuesto)}}"
                         class="btn btn-success">Remision</a>
 
                 </td>
