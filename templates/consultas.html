@@ -10,6 +10,9 @@
 
 
         <form action="{{ url_for('consultas')}}" method="GET" class="row g-3">
+            <div>
+                <h3>BUSQUEDA POR FECHA:</h3>
+            </div>
             <div class="col-md-3">
                 <input type="month" name="fecha_busqueda" id="" value="{{ fecha_busqueda}}" class="form-control">
             </div>
@@ -38,15 +41,20 @@
             class="btn btn-primary">Registros más recientes</a>
         {% endif %}
     </div>
+    <style>
+        .col-acciones {
+            width: 20%;
+        }
+    </style>
     <table class="table table-bordered table-hover">
-        <thead class="table-dark">
+        <thead class="table-dark text-center">
             <th>#</th>
             <th>FECHA</th>
             <th>CLIENTE</th>
             <th>TOTAL</th>
-            <th>ACCIONES</th>
+            <th class="col-acciones">ACCIONES</th>
         </thead>
-        <tbody>
+        <tbody class="fs-3 text-center">
             {% for dato in presupuestos.items %}
             <tr>
                 <td>{{dato.id_presupuesto}}</td>
@@ -55,17 +63,17 @@
                 <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
-                        class="btn btn-primary"><i class="fas fa-search"></i></a>
+                        class="btn btn-primary fs-3"><i class="fas fa-search"></i></a>
                     <!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
                     <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
-                        class="btn btn-success">Remision</a>
+                        class="btn btn-success fs-3">Remision</a>
                 </td>
             </tr>
             {% endfor %}
     </table>
     <div class="d-flex justify-content-between my-3">
         {% if presupuestos.has_prev %}
-        <a href="{{ url_for('consultas', page=1, fecha_busqueda=fecha_busqueda) }}" class="btn btn-primary">Primeros
+        <a href="{{ url_for('consultas', page=1, fecha_busqueda=fecha_busqueda) }}" class="btn btn-primary fs-3">Primeros
             registros</a>
         <a href="{{ url_for('consultas', page=presupuestos.prev_num, fecha_busqueda=fecha_busqueda) }}"
             class="btn btn-primary"><i class="fas fa-arrow-left"></i></a>
