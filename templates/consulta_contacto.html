@@ -79,14 +79,19 @@
             más recientes</a>
         {% endif %}
     </div>
-    <table class="table table-bordered table-hover fs-3">
+    <style>
+        .col-acciones {
+            width: 20%;
+        }
+    </style>
+    <table class="table table-bordered table-hover fs-3 text-center">
         <thead class="table-dark">
             <th>#</th>
             <th>FECHA</th>
             <th>SUBTOTAL</th>
             <th>IVA</th>
             <th>TOTAL</th>
-            <th>ACCIONES</th>
+            <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
             {% for dato in presupuestos.items %}
@@ -98,9 +103,9 @@
                 <td>$ {{ '{:,.2f}'.format(dato.presupuesto.total) if presupuestos else '0.00' }}</td>
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.presupuesto.id_presupuesto)}}"
-                        class="btn btn-primary"><i class="fas fa-search"></i></a>
+                        class="btn btn-primary fs-3"><i class="fas fa-search"></i></a>
                     <a href="{{url_for('remision', presupuesto_id=dato.presupuesto.id_presupuesto)}}"
-                        class="btn btn-success">Remision</a>
+                        class="btn btn-success fs-3">Remision</a>
 
                 </td>
             </tr>

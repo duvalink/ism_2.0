@@ -46,7 +46,7 @@
             width: 20%;
         }
     </style>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover fs-3 text-center">
         <thead class="table-dark text-center">
             <th>#</th>
             <th>FECHA</th>
@@ -54,7 +54,7 @@
             <th>TOTAL</th>
             <th class="col-acciones">ACCIONES</th>
         </thead>
-        <tbody class="fs-3 text-center">
+        <tbody>
             {% for dato in presupuestos.items %}
             <tr>
                 <td>{{dato.id_presupuesto}}</td>
