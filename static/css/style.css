@@ -53,6 +53,16 @@
     font-weight: bold;
 }
 
+/* ESTILOS PARA LA TABLA DE LA CONSULTA DE PRESUPUESTOS (CLIENTE, CONTACTO, GRAL) */
+
+.col-acciones {
+    width: 20%;
+}
+
+/* FIN DE ESTILOS PARA TABLAS DE CONSULTA DE PRESUPUESTOS */
+
+
+/* ESTILOS PARA TABLA DE CLIENTES */
 .col-id {
     width: 5%;
 }
@@ -65,11 +75,8 @@
     width: 10%;
 }
 
-.col-acciones {
-    width: 10%;
+.col_acciones {
+    width: 15%;
 }
 
-.wide-textarea {
-    width: 100%;
-    /* height: 100px; */
-}
+/* FIN DE ESTILOS PARA TABLA DE CLIENTES */
