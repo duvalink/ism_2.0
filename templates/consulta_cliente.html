@@ -39,14 +39,7 @@
             más recientes</a>
         {% endif %}
     </div>
-    <style>
-        .col_acciones {
-            width: 20%;
-        }
-        .col_totals {
-            width: 20%;
-        }
-    </style>
+
     <table class="table table-bordered table-hover fs-3 text-center ">
         <thead class="table-dark">
             <th>#</th>
@@ -54,7 +47,7 @@
             <th>SUBTOTAL</th>
             <th>IVA</th>
             <th class="col_totals">TOTAL</th>
-            <th class="col_acciones">ACCIONES</th>
+            <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
             {% for dato in presupuestos %}
@@ -63,8 +56,8 @@
                 <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
-                <td class="col_totals">$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
-                <td class="col_acciones">
+                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary fs-4"><i class="fas fa-search"></i></a>
                     <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto) }}"

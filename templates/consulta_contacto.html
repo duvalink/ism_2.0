@@ -79,11 +79,6 @@
             más recientes</a>
         {% endif %}
     </div>
-    <style>
-        .col-acciones {
-            width: 20%;
-        }
-    </style>
     <table class="table table-bordered table-hover fs-3 text-center">
         <thead class="table-dark">
             <th>#</th>
@@ -106,7 +101,6 @@
                         class="btn btn-primary fs-3"><i class="fas fa-search"></i></a>
                     <a href="{{url_for('remision', presupuesto_id=dato.presupuesto.id_presupuesto)}}"
                         class="btn btn-success fs-3">Remision</a>
-
                 </td>
             </tr>
             {% endfor %}
