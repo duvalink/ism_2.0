@@ -46,9 +46,9 @@
 
     <table class="table table-dark table-hover table-bordered border-primary fs-4 top-70 start-0">
         <thead style="text-align: center;">
-            <th>Partida</th>
+            <th>Part</th>
             <th style="width: 1000px;">Descripcion</th>
-            <th>Cantidad</th>
+            <th>Cant</th>
             <th>Precio</th>
             <th>Importe</th>
             <th>Acciones</th>
@@ -56,10 +56,10 @@
         <tbody>
             {% for dato in partidas_db %}
             <tr>
-                <td style="text-align: center;" class="align-middle">{{dato.partida}}</td>
+                <td class="align-middle text-center">{{dato.partida}}</td>
                 <td style="text-align: justify;">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
-                <td style="text-align: center;">{{dato.cantidad}}</td>
-                <td>$ {{'{:,.2f}'.format(dato.precio)}}</td>
+                <td class="align-middle text-center">{{dato.cantidad}}</td>
+                <td class="text-center">$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
                 <td class="align-middle" style="text-align: center;"><a href="{{url_for('editar_partida', id_partida=dato.id_partida) }}" class="btn btn-primary"
                         data-bs-toggle="modal" data-bs-target="#modalUpdate{{dato.id_partida}}"><i class="fas fa-edit"></i></a>|<a
