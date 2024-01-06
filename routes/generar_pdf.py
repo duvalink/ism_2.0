@@ -408,13 +408,13 @@ class Pdf:
         table.setStyle(
             TableStyle(
                 [
-                    ("BACKGROUND", (0, 0), (-1, 0), colors.gray),
-                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                    # ("BACKGROUND", (0, 0), (-1, 0), colors.gray),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
                     ("ALIGN", (0, 0), (-1, 0), "CENTER"),
                     ("VALIGN", (0, 0), (-1, 0), "MIDDLE"),
                     ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
                     ("FONTSIZE", (0, 0), (-1, 0), 12),
-                    ("BOTTOMPADDING", (0, 0), (-1, 0), 10),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 5),
                     ("BACKGROUND", (0, 1), (-1, -1), colors.white),
                     ("ALIGN", (0, 1), (-1, -1), "CENTER"),
                     ("VALIGN", (0, 1), (-1, -1), "MIDDLE"),
@@ -422,6 +422,7 @@ class Pdf:
                     ("GRID", (0, 0), (-1, -1), 1, colors.black),
                     # NEGRITA
                     ("FONTNAME", (4, 1), (4, -1), "Helvetica-Bold"),
+                    
                 ]
             )
         )
