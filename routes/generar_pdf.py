@@ -241,7 +241,9 @@ class Pdf:
         nombre_archivo = f"P-{presupuesto_id}.pdf"
 
         # Ruta del archivo
-        ruta_pdf = os.path.join(os.getcwd(), "presupuestos_pdf", nombre_archivo)
+        # ruta_pdf = os.path.join(os.getcwd(), "presupuestos_pdf", nombre_archivo)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        ruta_pdf = os.path.join(dir_path, '..', 'presupuestos_pdf', nombre_archivo)
 
         # Verificar si el archivo original ya existe
         if os.path.exists(ruta_pdf):
@@ -250,17 +252,13 @@ class Pdf:
 
             # Adjuntar el consecutivo al nombre base, en caso de que ya exista el archivo pdf
             nuevo_nombre_archivo = f"P-{presupuesto_id}_corregido({contador}).pdf"
-            nueva_ruta_pdf = os.path.join(
-                os.getcwd(), "presupuestos_pdf", nuevo_nombre_archivo
-            )
+            nueva_ruta_pdf = os.path.join(dir_path, '..', 'presupuestos_pdf', nuevo_nombre_archivo)
 
             # Incrementar el contador hasta que se encuentre un nombre de archivo que no exista en el directorio
             while os.path.exists(nueva_ruta_pdf):
                 contador += 1
                 nuevo_nombre_archivo = f"P-{presupuesto_id}_({contador}).pdf"
-                nueva_ruta_pdf = os.path.join(
-                    os.getcwd(), "presupuestos_pdf", nuevo_nombre_archivo
-                )
+                nueva_ruta_pdf = os.path.join(dir_path, '..', 'presupuestos_pdf', nuevo_nombre_archivo)
 
             # Asignar el nuevo nombre al archivo
             nombre_archivo = nuevo_nombre_archivo
@@ -287,6 +285,7 @@ class Pdf:
 
         # Nombre base del archivo
         nombre_archivo, ruta_pdf = self.obtener_nombre_archivo_unico(presupuesto_id)
+    
 
         doc = SimpleDocTemplate(
             nombre_archivo,
@@ -298,7 +297,9 @@ class Pdf:
         )
 
         # Logo de la empresa
-        logo_path = "./static/img/logoEmpresa.png"
+        # logo_path = "./static/img/logoEmpresa.png"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        logo_path = os.path.join(dir_path, "../static/img/logoEmpresa.png")
         # Ajustar width y height segun dimensiones deseadas
         logo = Image(logo_path, width=100, height=92)
 
