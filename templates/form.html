@@ -78,8 +78,8 @@
         </label>
     </div>
     <div class="col-sm mb-1">
-        <select name="cliente_id" id="cliente" class="form-select fs-4">
-            <option {% if not cliente_id %}selected{% endif %}>Selecciona Cliente</option>
+        <select name="cliente_id" id="cliente" class="form-select fs-4" required>
+            <option value="" {% if not cliente_id %}selected{% endif %}>Selecciona Cliente</option>
             {% for dato in listar_clientes %}
             <option value="{{dato.id_cliente}}" {% if dato.id_cliente==cliente_id %}selected{% endif %}>
                 {{dato.nombre}}
