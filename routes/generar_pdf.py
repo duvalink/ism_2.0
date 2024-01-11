@@ -599,12 +599,12 @@ class Pdf:
         with open(ruta_pdf, "rb") as f:
             pdf_data = f.read()
 
-        # return redirect(url_for("cerrar"))
+        return redirect(url_for("cerrar"))
 
         # Habilitar solo cuando ya se este trabajando con los correos
-        return redirect(
-            url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
-        )
+        # return redirect(
+        #     url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
+        # )
 
     def rutas(self):
         self.app.add_url_rule(
