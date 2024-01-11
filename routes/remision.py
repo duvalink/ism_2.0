@@ -243,7 +243,7 @@ class Pdf:
 
         # Ruta del archivo
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        dir_pdf = os.path.join(dir_path, "../presupuestos_pdf")
+        dir_pdf = os.path.join(dir_path, "../remisiones")
 
         # Verificar si el directorio existe, si no, crearlo
         if not os.path.exists(dir_pdf):

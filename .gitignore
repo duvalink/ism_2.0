@@ -1,4 +1,5 @@
 .env
 presupuestos_pdf/*.pdf
+remisiones/*.pdf
 /*.pdf
 *.pyc
