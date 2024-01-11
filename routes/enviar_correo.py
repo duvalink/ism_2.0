@@ -71,15 +71,26 @@ class Correo:
                 asuntos.append(pc.mensaje)
         return correos_electronicos, asuntos
 
+    # def enviar_correos(self, destinatarios, asuntos, presupuesto_id):
+    #     cuerpo = f"Buen dia, envio presupuesto {presupuesto_id}."
+    #     archivo_adjunto = os.path.join(
+    #         os.getcwd(), "presupuestos_pdf", f"P-{presupuesto_id}.pdf"
+    #     )
+    #     for destinatario, asunto in zip(destinatarios, asuntos):
+    #         mensaje = self.crear_mensaje([destinatario], asunto, cuerpo)
+    #         self.adjuntar_archivo(mensaje, archivo_adjunto)
+    #         self.enviar_correo(mensaje, [destinatario])
+
+
     def enviar_correos(self, destinatarios, asuntos, presupuesto_id):
         cuerpo = f"Buen dia, envio presupuesto {presupuesto_id}."
         archivo_adjunto = os.path.join(
             os.getcwd(), "presupuestos_pdf", f"P-{presupuesto_id}.pdf"
         )
-        for destinatario, asunto in zip(destinatarios, asuntos):
-            mensaje = self.crear_mensaje([destinatario], asunto, cuerpo)
-            self.adjuntar_archivo(mensaje, archivo_adjunto)
-            self.enviar_correo(mensaje, [destinatario])
+        asunto = asuntos[0] if asuntos else ''  # Usar el primer asunto o una cadena vacía si no hay asuntos
+        mensaje = self.crear_mensaje(destinatarios, asunto, cuerpo)
+        self.adjuntar_archivo(mensaje, archivo_adjunto)
+        self.enviar_correo(mensaje, destinatarios)
 
     def enviar_correo_presupuesto(self, presupuesto_id):
         presupuesto_contactos = self.obtener_contactos(presupuesto_id)
