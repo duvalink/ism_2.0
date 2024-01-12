@@ -440,11 +440,19 @@ class Presupuesto:
         query = PresupuestoModel.query.order_by(PresupuestoModel.fecha.desc())
         fecha_busqueda, query = self.consultasPorFecha(query)
         presupuestos, total_pages = self.query_paginado(query, 25)
+
+        presupuesto_ids = [p.id_presupuesto for p in presupuestos.items]
+
+        presupuesto_contacto = (PresupuestoContacto.query.filter(
+            PresupuestoContacto.presupuesto_id.in_(presupuesto_ids)
+        ).all())
+        presupuesto_contacto_dict = {pc.presupuesto_id: pc for pc in presupuesto_contacto}
         return render_template(
             "consultas.html",
             presupuestos=presupuestos,
             fecha_busqueda=fecha_busqueda,
             total_pages=total_pages,
+            presupuesto_contacto=presupuesto_contacto_dict,
         )
 
     def consultasPorFecha(self, query):
