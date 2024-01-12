@@ -6,6 +6,7 @@ from routes.enviar_correo import Correo
 from routes.generar_pdf import Pdf
 from routes.remision import Pdf as Remision
 from utils.db import db
+import webbrowser
 
 app = create_app()
 
@@ -23,4 +24,5 @@ pdf = Pdf(app)
 remision = Remision(app)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    webbrowser.open_new("http://localhost:5000")
+    app.run(debug=True)
