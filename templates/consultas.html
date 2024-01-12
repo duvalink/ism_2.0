@@ -47,6 +47,7 @@
             <th>#</th>
             <th>FECHA</th>
             <th>CLIENTE</th>
+            <th>ASUNTO</th>
             <th>TOTAL</th>
             <th class="col-acciones">ACCIONES</th>
         </thead>
@@ -56,6 +57,7 @@
                 <td>{{dato.id_presupuesto}}</td>
                 <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
                 <td>{{dato.cliente.nombre}}</td>
+                <td>FABRICACION DE ATRIL PARA AREA DE PASTELERIA</td>    
                 <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"

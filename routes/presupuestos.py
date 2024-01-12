@@ -437,7 +437,7 @@ class Presupuesto:
         return presupuestos, total_pages
 
     def consultas(self):
-        query = PresupuestoModel.query
+        query = PresupuestoModel.query.order_by(PresupuestoModel.fecha.desc())
         fecha_busqueda, query = self.consultasPorFecha(query)
         presupuestos, total_pages = self.query_paginado(query, 25)
         return render_template(
