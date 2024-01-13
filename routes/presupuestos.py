@@ -389,6 +389,13 @@ class Presupuesto:
 
         db.session.commit()
 
+    def consulta_mensajes_contacto(self, presupuesto_contacto_ids):
+        presupuesto_contacto = (PresupuestoContacto.query.filter(
+            PresupuestoContacto.id_presupuesto_contacto.in_(presupuesto_contacto_ids)
+        ).all())
+        presupuesto_contacto_dict = {pc.id_presupuesto_contacto: pc for pc in presupuesto_contacto}
+        return presupuesto_contacto_dict
+
     def consulta_presupuesto_contacto(self):
         listar_clientes, contacto = self.obtener_clientes_y_contactos()
         if request.method == "POST":
@@ -397,7 +404,10 @@ class Presupuesto:
             id_contacto = request.args.get("contacto", type=int)
         page = request.args.get("page", 1, type=int)
         query = PresupuestoContacto.query.filter_by(contacto_id=id_contacto)
-        presupuestos= query.paginate(page=page, per_page=10)
+        presupuestos = query.paginate(page=page, per_page=10)
+        presupuesto_contacto_ids = [p.id_presupuesto_contacto for p in presupuestos.items]
+        presupuesto_contacto_dict = self.consulta_mensajes_contacto(presupuesto_contacto_ids)
+
         return render_template(
             "consulta_contacto.html",
             presupuestos=presupuestos,  # Pasa el objeto paginado a tu plantilla
@@ -405,6 +415,7 @@ class Presupuesto:
             contacto=contacto,
             total_pages=presupuestos.pages,
             id_contacto=id_contacto,
+            presupuesto_contacto=presupuesto_contacto_dict,
         )
 
     def consultar_presupuesto(self, id_presupuesto):
@@ -437,16 +448,13 @@ class Presupuesto:
         return presupuestos, total_pages
 
     def consultas(self):
-        query = PresupuestoModel.query.order_by(PresupuestoModel.fecha.desc())
+        query = PresupuestoModel.query.order_by(PresupuestoModel.id_presupuesto.desc())
         fecha_busqueda, query = self.consultasPorFecha(query)
         presupuestos, total_pages = self.query_paginado(query, 25)
 
         presupuesto_ids = [p.id_presupuesto for p in presupuestos.items]
+        presupuesto_contacto_dict = self.consulta_mensajes(presupuesto_ids)
 
-        presupuesto_contacto = (PresupuestoContacto.query.filter(
-            PresupuestoContacto.presupuesto_id.in_(presupuesto_ids)
-        ).all())
-        presupuesto_contacto_dict = {pc.presupuesto_id: pc for pc in presupuesto_contacto}
         return render_template(
             "consultas.html",
             presupuestos=presupuestos,
@@ -454,6 +462,15 @@ class Presupuesto:
             total_pages=total_pages,
             presupuesto_contacto=presupuesto_contacto_dict,
         )
+
+    def consulta_mensajes(self, presupuesto_ids):
+        presupuesto_contacto = PresupuestoContacto.query.filter(
+            PresupuestoContacto.presupuesto_id.in_(presupuesto_ids)
+        ).all()
+        presupuesto_contacto_dict = {
+            pc.presupuesto_id: pc for pc in presupuesto_contacto
+        }
+        return presupuesto_contacto_dict
 
     def consultasPorFecha(self, query):
         fecha_busqueda = request.args.get("fecha_busqueda")
@@ -475,11 +492,15 @@ class Presupuesto:
         id_cliente = request.args.get("cliente") or session.get("cliente_id")
         session["cliente_id"] = id_cliente
         listar_clientes = ClienteModel.query.all()
-        query = PresupuestoModel.query.filter_by(cliente_id=id_cliente)
+        query = PresupuestoModel.query.filter_by(cliente_id=id_cliente).order_by(
+            PresupuestoModel.id_presupuesto.desc()
+        )
         cliente_seleccionado = ClienteModel.query.get(id_cliente)
         nombre_cliente = cliente_seleccionado.nombre if cliente_seleccionado else ""
         print(id_cliente)
         presupuestos, total_pages = self.query_paginado(query, per_page=25)
+        presupuesto_ids = [p.id_presupuesto for p in presupuestos.items]
+        presupuesto_contacto_dict = self.consulta_mensajes(presupuesto_ids)
         return render_template(
             "consulta_cliente.html",
             presupuestos=presupuestos,
@@ -487,6 +508,7 @@ class Presupuesto:
             nombre_cliente=nombre_cliente,
             total_pages=total_pages,
             id_cliente=id_cliente,
+            presupuesto_contacto=presupuesto_contacto_dict,
         )
 
     def obtener_clientes_y_contactos(self):
