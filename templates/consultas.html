@@ -48,7 +48,7 @@
             <th>FECHA</th>
             <th>CLIENTE</th>
             <th>ASUNTO</th>
-            <th>TOTAL</th>
+            <th>SUBTOTAL</th>
             <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@
                 <td>{{dato.cliente.nombre}}</td>
                 <td>{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
                     else '' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary fs-4"><i class="fas fa-search"></i></a>
