@@ -44,9 +44,10 @@
         <thead class="table-dark">
             <th>#</th>
             <th>FECHA</th>
+            <th>ASUNTO</th>
             <th>SUBTOTAL</th>
-            <th>IVA</th>
-            <th class="col_totals">TOTAL</th>
+            <!-- <th>IVA</th>
+            <th class="col_totals">TOTAL</th> -->
             <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
@@ -54,9 +55,12 @@
             <tr>
                 <td>{{dato.id_presupuesto}}</td>
                 <td>{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
+
+                <td>{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
+                    else '' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td>
+                <!-- <td>$ {{ '{:,.2f}'.format(dato.iva) if presupuestos else '0.00' }}</td>
+                <td>$ {{ '{:,.2f}'.format(dato.total) if presupuestos else '0.00' }}</td> -->
                 <td>
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary fs-4"><i class="fas fa-search"></i></a>
