@@ -45,19 +45,19 @@
     <table class="table table-bordered table-hover fs-4 text-center">
         <thead class="table-dark text-center">
             <th>#</th>
-            <th>FECHA</th>
-            <th>CLIENTE</th>
+            <th style="width: 130px;">FECHA</th>
+            <th style="width: 220px;">CLIENTE</th>
             <th>ASUNTO</th>
-            <th>SUBTOTAL</th>
+            <th style="width: 170px;">SUBTOTAL</th>
             <th class="col-acciones">ACCIONES</th>
         </thead>
         <tbody>
             {% for dato in presupuestos.items %}
-            <tr>
-                <td>{{dato.id_presupuesto}}</td>
+            <tr class="align-middle">
+                <td class="fs-5">{{dato.id_presupuesto}}</td>
                 <td class="fs-5">{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
-                <td>{{dato.cliente.nombre}}</td>
-                <td>{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
+                <td class="fs-5">{{dato.cliente.nombre}}</td>
+                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
                     else '' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
                 <td>
