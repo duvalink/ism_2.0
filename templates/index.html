@@ -50,7 +50,7 @@
     <table class="table table-dark table-hover table-bordered border-primary fs-4 top-70 start-0 text-center">
         <thead style="text-align: center;">
             <th>Part</th>
-            <th style="width: 1000px;">Descripcion</th>
+            <th style="width: 850px;">Descripcion</th>
             <th>Cant</th>
             <th>Precio</th>
             <th>Importe</th>
@@ -60,7 +60,7 @@
             {% for dato in partidas_db %}
             <tr>
                 <td class="align-middle">{{dato.partida}}</td>
-                <td style="text-align: justify;">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
+                <td style="text-align: justify;" class="fs-5">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
                 <td class="align-middle">{{dato.cantidad}}</td>
                 <td class="align-middle">$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td class="align-middle">$ {{'{:,.2f}'.format(dato.importe)}}</td>
@@ -100,9 +100,9 @@
                 <div class="col-2">
                     <input class="big_checkbox" type="checkbox" name="contacto_id" value="{{contacto.id_contacto}}"
                         id="contacto{{contacto.id_contacto}}">
-                    <label for="contacto{{contacto.id_contacto}}" class="fs-4">{{contacto.contacto}}</label>
+                    <label for="contacto{{contacto.id_contacto}}" class="fs-5 text-left">{{contacto.contacto}}</label>
                 </div>
-                {% if loop.index is divisibleby 5 %}
+                {% if loop.index is divisibleby 6 %}
             </div>
             <div class="row">
                 {% endif %}
