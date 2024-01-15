@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, url_for
 from models.presupuesto import Presupuesto as PresupuestoModel
 from models.atencion import PresupuestoContacto
 from models.cliente import Contacto as ContactoModel
-from routes.generar_pdf import Pdf
+# from routes.generar_pdf import Pdf
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -158,37 +158,48 @@ class Correo:
     #         self.adjuntar_archivo(mensaje, archivo_adjunto)
     #         self.enviar_correo(mensaje, [destinatario])
 
-    def enviar_correos(self, destinatarios, asuntos, presupuesto_id):
-        """
-        Esta función se encarga de enviar correos electrónicos con el presupuesto más reciente adjunto a una lista de destinatarios.
+    # def enviar_correos(self, destinatarios, asuntos, presupuesto_id):
+    #     """
+    #     Esta función se encarga de enviar correos electrónicos con el presupuesto más reciente adjunto a una lista de destinatarios.
 
-        Parámetros:
-        destinatarios (list): Una lista de direcciones de correo electrónico a las que se enviará el correo.
-        asuntos (list): Una lista de asuntos para los correos. Se utilizará el primer asunto de la lista.
-        presupuesto_id (int): El ID del presupuesto que se adjuntará al correo.
+    #     Parámetros:
+    #     destinatarios (list): Una lista de direcciones de correo electrónico a las que se enviará el correo.
+    #     asuntos (list): Una lista de asuntos para los correos. Se utilizará el primer asunto de la lista.
+    #     presupuesto_id (int): El ID del presupuesto que se adjuntará al correo.
 
-        Proceso:
-        1. Crea el cuerpo del correo.
-        2. Crea una instancia de la clase Pdf y obtiene el nombre y la ruta del archivo del presupuesto más reciente.
-        3. Crea el mensaje de correo electrónico utilizando la función `crear_mensaje`.
-        4. Adjunta el archivo del presupuesto más reciente al mensaje utilizando la función `adjuntar_archivo`.
-        5. Envía el correo a los destinatarios utilizando la función `enviar_correo`.
+    #     Proceso:
+    #     1. Crea el cuerpo del correo.
+    #     2. Crea una instancia de la clase Pdf y obtiene el nombre y la ruta del archivo del presupuesto más reciente.
+    #     3. Crea el mensaje de correo electrónico utilizando la función `crear_mensaje`.
+    #     4. Adjunta el archivo del presupuesto más reciente al mensaje utilizando la función `adjuntar_archivo`.
+    #     5. Envía el correo a los destinatarios utilizando la función `enviar_correo`.
 
-        No retorna nada.
-        """
-        cuerpo = f"Buen dia, envio presupuesto {presupuesto_id}."
+    #     No retorna nada.
+    #     """
+    #     cuerpo = f"Buen dia, envio presupuesto {presupuesto_id}."
 
-        generador_pdf = Pdf(self.app)
-        nombre_archivo, ruta_pdf = generador_pdf.obtener_nombre_y_ruta_archivo(
-            presupuesto_id
-        )
-        archivo_adjunto = ruta_pdf
+    #     generador_pdf = Pdf(self.app)
+    #     nombre_archivo, ruta_pdf = generador_pdf.obtener_nombre_y_ruta_archivo(
+    #         presupuesto_id
+    #     )
+    #     archivo_adjunto = ruta_pdf
 
-        asunto = (
-            asuntos[0] if asuntos else ""
-        )  # Usar el primer asunto o una cadena vacía si no hay asuntos
-        mensaje = self.crear_mensaje(destinatarios, asunto, cuerpo)
-        self.adjuntar_archivo(mensaje, archivo_adjunto)
+    #     asunto = (
+    #         asuntos[0] if asuntos else ""
+    #     )  # Usar el primer asunto o una cadena vacía si no hay asuntos
+    #     mensaje = self.crear_mensaje(destinatarios, asunto, cuerpo)
+    #     self.adjuntar_archivo(mensaje, archivo_adjunto)
+    #     self.enviar_correo(mensaje, destinatarios)
+
+
+
+    def enviar_correos(self, destinatarios, asuntos, presupuesto_id): 
+        cuerpo = f"Buen dia, envio presupuesto {presupuesto_id}." 
+        archivo_adjunto = os.path.join( os.getcwd(), "presupuestos_pdf", f"P-{presupuesto_id}.pdf" ) 
+        asunto = asuntos[0] if asuntos else '' 
+        # Usar el primer asunto o una cadena vacía si no hay asuntos 
+        mensaje = self.crear_mensaje(destinatarios, asunto, cuerpo) 
+        self.adjuntar_archivo(mensaje, archivo_adjunto) 
         self.enviar_correo(mensaje, destinatarios)
 
     def enviar_correo_presupuesto(self, presupuesto_id):
