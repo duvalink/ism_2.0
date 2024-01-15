@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, url_for
 from models.presupuesto import Presupuesto as PresupuestoModel
 from models.atencion import PresupuestoContacto
 from models.cliente import Contacto as ContactoModel
-from generar_pdf import Pdf
+from .generar_pdf import Pdf
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
