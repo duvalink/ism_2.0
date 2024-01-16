@@ -55,9 +55,9 @@
         </thead>
         <tbody>
             {% for dato in partidas_db %}
-            <tr>
+            <tr class="align-middle">
                 <td class="align-middle text-center">{{dato.partida}}</td>
-                <td style="text-align: justify;">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
+                <td style="text-align: justify;" class="fs-5">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
                 <td class="align-middle text-center">{{dato.cantidad}}</td>
                 <td class="text-center">$ {{'{:,.2f}'.format(dato.precio)}}</td>
                 <td>$ {{'{:,.2f}'.format(dato.importe)}}</td>
