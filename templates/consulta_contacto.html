@@ -79,10 +79,10 @@
             más recientes</a>
         {% endif %}
     </div>
-    <table class="table table-bordered table-hover fs-3 text-center">
+    <table class="table table-bordered table-hover fs-4 text-center">
         <thead class="table-dark">
             <th>#</th>
-            <th>FECHA</th>
+            <th style="width: 130px;">FECHA</th>
             <th>ASUNTO</th>
             <th>SUBTOTAL</th>
             <!-- <th>IVA</th>
@@ -91,12 +91,12 @@
         </thead>
         <tbody>
             {% for dato in presupuestos.items %}
-            <tr>
+            <tr class="align-middle">
                 <td>{{dato.presupuesto.id_presupuesto}}</td>
                 <td class="fs-5">{{ dato.presupuesto.fecha.strftime('%d-%m-%Y') }}</td>
-                <td>{{ presupuesto_contacto[dato.id_presupuesto_contacto].mensaje if dato.id_presupuesto_contacto in presupuesto_contacto
+                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto_contacto].mensaje if dato.id_presupuesto_contacto in presupuesto_contacto
                     else '' }}</td>
-                <td>$ {{ '{:,.2f}'.format(dato.presupuesto.subtotal) if presupuestos else '0.00' }}</td>
+                <td class="fs-5">$ {{ '{:,.2f}'.format(dato.presupuesto.subtotal) if presupuestos else '0.00' }}</td>
                 <!-- <td>$ {{ '{:,.2f}'.format(dato.presupuesto.iva) if presupuestos else '0.00' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.presupuesto.total) if presupuestos else '0.00' }}</td> -->
                 <td>
