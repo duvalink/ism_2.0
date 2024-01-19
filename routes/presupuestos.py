@@ -439,6 +439,7 @@ class Presupuesto:
         importe = request.form.get("importe")
         material = request.form.get("material")
         material = material.upper()
+        iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
 
         ultima_partida = self.obtener_ultimo_numero_partida(presupuesto_id)
         nueva_partida_numero = ultima_partida + 1
@@ -458,7 +459,7 @@ class Presupuesto:
         db.session.commit()
 
         # recalcula los totales
-        self.recalcular_totales(presupuesto_id)
+        self.recalcular_totales(presupuesto_id, iva_porcentaje)
 
         # guardar los cambios despues de recalcular los totales
         db.session.commit()
@@ -1140,7 +1141,7 @@ class Presupuesto:
         db.session.delete(partida)
         db.session.commit()
         self.reordenar_partidas(presupuesto_id)
-        self.recalcular_totales(presupuesto_id)
+        self.recalcular_totales(presupuesto_id, 0.08)
 
         nuevo_presupuesto = "id_presupuesto" in session
         if nuevo_presupuesto:
