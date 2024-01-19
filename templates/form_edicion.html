@@ -89,6 +89,16 @@
                         </label>
                     </div>
                     <div class="col-sm mb-1">
+                        <div class="fs-3 text-center fw-bold">
+                            <input class="form-check-input" type="radio" name="iva_porcentaje" id="ocho" value="8"
+                                checked {% if session['iva_porcentaje']==0.08 %} checked {% endif %}
+                                onclick="changeColor('labelOcho')">
+                            <label for="ocho" id="labelOcho">8%</label>
+                            <input class="form-check-input" type="radio" name="iva_porcentaje" id="dieciseis" value="16"
+                                {% if session['iva_porcentaje']==0.16 %} checked {% endif %}
+                                onclick="changeColor('labelDieciseis')">
+                            <label for="dieciseis" id="labelDieciseis">16%</label>
+                        </div>
                         <select name="cliente_id" id="cliente" class="form-select fs-4">
                             <option {% if not cliente_id %}selected{% endif %}>Selecciona Cliente</option>
                             {% for dato in listar_clientes %}

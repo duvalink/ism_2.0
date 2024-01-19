@@ -180,5 +180,11 @@
         // Actualiza el estado del botón de envío al cargar la página
         updateSubmitButton();
     });
+    function changeColor(labelId) {
+        document.getElementById('labelOcho').style.color = 'black';
+        document.getElementById('labelDieciseis').style.color = 'black';
+        document.getElementById(labelId).style.color = 'green';
+    }
+
 </script>
 {% endblock %}
