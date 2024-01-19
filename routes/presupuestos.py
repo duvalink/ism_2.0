@@ -18,7 +18,7 @@ class Presupuesto:
         self.contador_partidas = 1
         self.rutas()
 
-    def calcular_totales(self, importe):
+    def calcular_totales(self, importe, iva_porcentaje):
         """
         Calcula los totales para la sesión actual.
 
@@ -36,12 +36,13 @@ class Presupuesto:
         >>> presupuestos = Presupuestos()
         >>> presupuestos.calcular_totales(100.0)
         """
+        iva_porcentaje = float(iva_porcentaje)
         for clave in ["mano_obra", "materiales", "subtotal", "iva", "total"]:
             if clave not in session:
                 session[clave] = 0.0
         session["subtotal"] += importe
 
-        session["iva"] = session["subtotal"] * 0.08
+        session["iva"] = session["subtotal"] * iva_porcentaje
 
         session["total"] = session["subtotal"] + session["iva"]
 
@@ -121,7 +122,10 @@ class Presupuesto:
         material = request.form.get("material")
         material = material.upper()
         cliente_id = request.form.get("cliente_id")
-        return fecha, descripcion, cantidad, precio, importe, material, cliente_id
+        iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
+        session["iva_porcentaje"] = iva_porcentaje
+
+        return fecha, descripcion, cantidad, precio, importe, material, cliente_id, iva_porcentaje
 
     def index(self):
         """
@@ -151,8 +155,10 @@ class Presupuesto:
                 importe,
                 material,
                 cliente_id,
+                iva_porcentaje,
             ) = self.recepcion_datos()
-            self.calcular_totales(importe)
+            self.calcular_totales(importe, iva_porcentaje)
+            print("IVA PORCENTAJE: ", iva_porcentaje)
             self.agregar_partidas(descripcion, cantidad, precio, importe, material)
             self.guardar_partida(fecha, cliente_id)
             return redirect(url_for("index"))
@@ -314,7 +320,7 @@ class Presupuesto:
         )
         db.session.add(nueva_partida)
         db.session.commit()
-        self.recalcular_totales(presupuesto_id)
+        self.recalcular_totales(presupuesto_id, session["iva_porcentaje"])
 
     def guardar_partida(self, fecha, cliente_id):
         """
@@ -500,6 +506,7 @@ class Presupuesto:
             partida.importe = importe
             partida.material = request.form.get("material")
             partida.material = partida.material.upper()
+            iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
 
             presupuesto = partida.presupuesto
 
@@ -507,7 +514,7 @@ class Presupuesto:
 
             db.session.commit()
 
-            self.recalcular_totales(presupuesto.id_presupuesto)
+            self.recalcular_totales(presupuesto.id_presupuesto, iva_porcentaje)
 
             nuevo_presupuesto = "id_presupuesto" in session
             if nuevo_presupuesto:
@@ -521,7 +528,7 @@ class Presupuesto:
                 )
         return render_template("form_edicion.html")
 
-    def recalcular_totales(self, presupuesto_id):
+    def recalcular_totales(self, presupuesto_id, iva_porcentaje):
         """
         Recalcula los totales para un presupuesto específico.
 
@@ -551,7 +558,7 @@ class Presupuesto:
         )
         presupuesto.mano_obra = float(presupuesto.subtotal) * 0.4
         presupuesto.materiales = float(presupuesto.subtotal) * 0.6
-        presupuesto.iva = float(presupuesto.subtotal) * 0.08
+        presupuesto.iva = float(presupuesto.subtotal) * iva_porcentaje
         presupuesto.total = float(presupuesto.subtotal) + presupuesto.iva
         db.session.commit()
 
