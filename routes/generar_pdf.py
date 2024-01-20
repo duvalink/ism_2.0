@@ -241,32 +241,13 @@ class Pdf:
         nombre_archivo = f"P-{presupuesto_id}.pdf"
 
         # Ruta del archivo
-        # ruta_pdf = os.path.join(os.getcwd(), "presupuestos_pdf", nombre_archivo)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         ruta_pdf = os.path.join(dir_path, "..", "presupuestos_pdf", nombre_archivo)
 
-        # Verificar si el archivo original ya existe
+        # Verificar si el archivo ya existe
         if os.path.exists(ruta_pdf):
-            # Contador para identificar a los archivos que se generen cuando ya exista un archivo con el mismo nombre
-            contador = 1
-
-            # Adjuntar el consecutivo al nombre base, en caso de que ya exista el archivo pdf
-            nuevo_nombre_archivo = f"P-{presupuesto_id}_corregido({contador}).pdf"
-            nueva_ruta_pdf = os.path.join(
-                dir_path, "..", "presupuestos_pdf", nuevo_nombre_archivo
-            )
-
-            # Incrementar el contador hasta que se encuentre un nombre de archivo que no exista en el directorio
-            while os.path.exists(nueva_ruta_pdf):
-                contador += 1
-                nuevo_nombre_archivo = f"P-{presupuesto_id}_({contador}).pdf"
-                nueva_ruta_pdf = os.path.join(
-                    dir_path, "..", "presupuestos_pdf", nuevo_nombre_archivo
-                )
-
-            # Asignar el nuevo nombre al archivo
-            nombre_archivo = nuevo_nombre_archivo
-            ruta_pdf = nueva_ruta_pdf
+            # Eliminar el archivo
+            os.remove(ruta_pdf)
 
         return nombre_archivo, ruta_pdf
 
@@ -599,10 +580,12 @@ class Pdf:
         with open(ruta_pdf, "rb") as f:
             pdf_data = f.read()
 
-        return redirect(url_for("cerrar"))
+        # return redirect(url_for("cerrar"))
 
         # Habilitar solo cuando ya se este trabajando con los correos
-        # return redirect(url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id))
+        return redirect(
+            url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
+        )
 
     def rutas(self):
         self.app.add_url_rule(
