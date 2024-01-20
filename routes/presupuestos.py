@@ -122,10 +122,19 @@ class Presupuesto:
         material = request.form.get("material")
         material = material.upper()
         cliente_id = request.form.get("cliente_id")
-        iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
+        iva_porcentaje = float(request.form.get("iva_porcentaje")) / 100
         session["iva_porcentaje"] = iva_porcentaje
 
-        return fecha, descripcion, cantidad, precio, importe, material, cliente_id, iva_porcentaje
+        return (
+            fecha,
+            descripcion,
+            cantidad,
+            precio,
+            importe,
+            material,
+            cliente_id,
+            iva_porcentaje,
+        )
 
     def index(self):
         """
@@ -439,7 +448,7 @@ class Presupuesto:
         importe = request.form.get("importe")
         material = request.form.get("material")
         material = material.upper()
-        iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
+        iva_porcentaje = float(request.form.get("iva_porcentaje")) / 100
 
         ultima_partida = self.obtener_ultimo_numero_partida(presupuesto_id)
         nueva_partida_numero = ultima_partida + 1
@@ -507,7 +516,7 @@ class Presupuesto:
             partida.importe = importe
             partida.material = request.form.get("material")
             partida.material = partida.material.upper()
-            iva_porcentaje = float(request.form.get("iva_porcentaje"))/100
+            iva_porcentaje = float(request.form.get("iva_porcentaje")) / 100
 
             presupuesto = partida.presupuesto
 
@@ -1140,8 +1149,9 @@ class Presupuesto:
         presupuesto_id = partida.presupuesto_id
         db.session.delete(partida)
         db.session.commit()
+        iva_porcentaje = session.get("iva_porcentaje", 0.08)
         self.reordenar_partidas(presupuesto_id)
-        self.recalcular_totales(presupuesto_id, 0.08)
+        self.recalcular_totales(presupuesto_id, iva_porcentaje)
 
         nuevo_presupuesto = "id_presupuesto" in session
         if nuevo_presupuesto:
