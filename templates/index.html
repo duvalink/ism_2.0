@@ -50,7 +50,7 @@
     <table class="table table-dark table-hover table-bordered border-primary fs-4 top-70 start-0 text-center">
         <thead style="text-align: center;">
             <th>Part</th>
-            <th style="width: 850px;">Descripcion</th>
+            <th style="width: 750px;">Descripcion</th>
             <th>Cant</th>
             <th>Precio</th>
             <th>Importe</th>
@@ -62,8 +62,8 @@
                 <td class="align-middle">{{dato.partida}}</td>
                 <td style="text-align: justify;" class="fs-5">{{dato.descripcion}}, EN MATERIAL {{dato.material}} </td>
                 <td class="align-middle">{{dato.cantidad}}</td>
-                <td class="align-middle">$ {{'{:,.2f}'.format(dato.precio)}}</td>
-                <td class="align-middle">$ {{'{:,.2f}'.format(dato.importe)}}</td>
+                <td class="align-middle text-start">$ {{'{:,.2f}'.format(dato.precio)}}</td>
+                <td class="align-middle text-start">$ {{'{:,.2f}'.format(dato.importe)}}</td>
                 <td class="align-middle"><a href="{{ url_for('editar_partida', id_partida=dato.id_partida) }}"
                         class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modalUpdate{{dato.id_partida}}"><i class="fas fa-edit"></i></a>
@@ -78,15 +78,15 @@
         <tfoot>
             <tr>
                 <td colspan="4" style="text-align: end;">Sub-Total</td>
-                <td>$ {{ '{:,.2f}'.format(presupuesto.subtotal) if presupuesto else '0.00' }}</td>
+                <td class="text-start">$ {{ '{:,.2f}'.format(presupuesto.subtotal) if presupuesto else '0.00' }}</td>
             </tr>
             <tr>
                 <td colspan="4" style="text-align: end;">IVA</td>
-                <td>$ {{ '{:,.2f}'.format(presupuesto.iva) if presupuesto else '0.00' }}</td>
+                <td class="text-start">$ {{ '{:,.2f}'.format(presupuesto.iva) if presupuesto else '0.00' }}</td>
             </tr>
             <tr>
                 <td colspan="4" style="text-align: end;">Total</td>
-                <td>$ {{ '{:,.2f}'.format(presupuesto.total) if presupuesto else '0.00' }}</td>
+                <td class="text-start">$ {{ '{:,.2f}'.format(presupuesto.total) if presupuesto else '0.00' }}</td>
             </tr>
         </tfoot>
     </table>
