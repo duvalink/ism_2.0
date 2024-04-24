@@ -1185,21 +1185,44 @@ class Presupuesto:
             partida.partida = i
         db.session.commit()
 
-    def on_f7():
-        keyboard.write("°")
-        return "Symbol added"
+    # INICIO SEGMENTO DE CODIGO
+    # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
+    # PERO SOLO FUNCIONA EN EL EQUIPO DONDE SE ESTA EJECUNTANDO EL PROGRAMA. NO FUNCIONA PARA LOS
+    # USUARIOS QUE SE CONECTAN A TRAVES DE LA RED LOCAL
+    # def on_f7():
+    #     keyboard.write("°")
+    #     return "Symbol added"
 
-    def on_f8():
-        keyboard.write("#")
-        return "Symbol added"
+    # def on_f8():
+    #     keyboard.write("#")
+    #     return "Symbol added"
 
-    def on_f9():
-        keyboard.write("Ø")
-        return "Symbol added"
+    # def on_f9():
+    #     keyboard.write("Ø")
+    #     return "Symbol added"
 
-    keyboard.add_hotkey("f7", on_f7)
-    keyboard.add_hotkey("f8", on_f8)
-    keyboard.add_hotkey("f9", on_f9)
+    # keyboard.add_hotkey("f7", on_f7)
+    # keyboard.add_hotkey("f8", on_f8)
+    # keyboard.add_hotkey("f9", on_f9)
+
+    # FIN DEL SEGMENTO DE CODIGO
+
+    # INICIO SEGMENTO DE CODIGO NUEVO, SUSITUYE AL ANTERIOR
+    # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE UNA RUTA
+    # LOS USUARIOS MIENTRAS ESTEN EN LA RED LOCAL YA PUEDEN AGREGAR SIMBOLOS ESPECIALES
+
+    def add_symbol(self):
+        symbol = request.form.get("symbol")
+        if symbol == "f7":
+            return "°"
+        elif symbol == "f8":
+            return "#"
+        elif symbol == "f9":
+            return "Ø"
+        else:
+            return "Invalid symbol"
+
+    # FIN DEL SEGMENTO DE CODIGO NUEVO
 
     def rutas(self):
         self.app.add_url_rule("/", "index", self.index, methods=["GET", "POST"])
@@ -1275,4 +1298,8 @@ class Presupuesto:
             "borrar_partida",
             self.borrar_partida,
             methods=["GET"],
+        )
+
+        self.app.add_url_rule(
+            "/add_symbol", "add_symbol", self.add_symbol, methods=["POST"]
         )
