@@ -1187,7 +1187,11 @@ class Presupuesto:
 
 
     def orden_produccion(self, presupuesto_id):
-        return render_template("orden_produccion.html", presupuesto_id=presupuesto_id)
+        # Mostrar datos de presupuesto
+        presupuesto = PresupuestoModel.query.get(presupuesto_id)
+        partidas = Presupuesto_Partida.query.filter_by(presupuesto_id=presupuesto_id).all()
+        cliente = ClienteModel.query.get(presupuesto.cliente_id)
+        return render_template("orden_produccion.html", presupuesto=presupuesto, partidas=partidas, cliente=cliente)
 
     # INICIO SEGMENTO DE CODIGO
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
