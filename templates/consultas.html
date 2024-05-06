@@ -66,6 +66,8 @@
                     <!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
                     <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
                         class="btn btn-success fs-4">Remision</a>
+                    <a href="{{ url_for('orden_produccion', presupuesto_id=dato.id_presupuesto)}}"
+                        class="btn btn-danger fs-4">OP</a>
                 </td>
             </tr>
             {% endfor %}
