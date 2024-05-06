@@ -1185,6 +1185,10 @@ class Presupuesto:
             partida.partida = i
         db.session.commit()
 
+
+    def orden_produccion(self, presupuesto_id):
+        return render_template("orden_produccion.html", presupuesto_id=presupuesto_id)
+
     # INICIO SEGMENTO DE CODIGO
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
     # PERO SOLO FUNCIONA EN EL EQUIPO DONDE SE ESTA EJECUNTANDO EL PROGRAMA. NO FUNCIONA PARA LOS
@@ -1297,6 +1301,13 @@ class Presupuesto:
             "/borrar_partida/<int:id_partida>",
             "borrar_partida",
             self.borrar_partida,
+            methods=["GET"],
+        )
+
+        self.app.add_url_rule(
+            "/orden_produccion/<int:presupuesto_id>",
+            "orden_produccion",
+            self.orden_produccion,
             methods=["GET"],
         )
 
