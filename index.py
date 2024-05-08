@@ -5,6 +5,7 @@ from routes.contactos import ControladorContactos
 from routes.enviar_correo import Correo
 from routes.generar_pdf import Pdf
 from routes.remision import Pdf as Remision
+from routes.orden_produccion import Pdf as ordenProduccion
 from utils.db import db
 import webbrowser
 
@@ -22,6 +23,7 @@ contacto = ControladorContactos(app)
 correo = Correo(app)
 pdf = Pdf(app)
 remision = Remision(app)
+orden_produccion = ordenProduccion(app)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
