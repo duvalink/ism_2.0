@@ -1186,12 +1186,12 @@ class Presupuesto:
         db.session.commit()
 
 
-    def orden_produccion(self, presupuesto_id):
-        # Mostrar datos de presupuesto
-        presupuesto = PresupuestoModel.query.get(presupuesto_id)
-        partidas = Presupuesto_Partida.query.filter_by(presupuesto_id=presupuesto_id).all()
-        cliente = ClienteModel.query.get(presupuesto.cliente_id)
-        return render_template("orden_produccion.html", presupuesto=presupuesto, partidas=partidas, cliente=cliente)
+    # def orden_produccion(self, presupuesto_id):
+    #     # Mostrar datos de presupuesto
+    #     presupuesto = PresupuestoModel.query.get(presupuesto_id)
+    #     partidas = Presupuesto_Partida.query.filter_by(presupuesto_id=presupuesto_id).all()
+    #     cliente = ClienteModel.query.get(presupuesto.cliente_id)
+    #     return render_template("orden_produccion.html", presupuesto=presupuesto, partidas=partidas, cliente=cliente)
 
     # INICIO SEGMENTO DE CODIGO
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
@@ -1308,12 +1308,12 @@ class Presupuesto:
             methods=["GET"],
         )
 
-        self.app.add_url_rule(
-            "/orden_produccion/<int:presupuesto_id>",
-            "orden_produccion",
-            self.orden_produccion,
-            methods=["GET"],
-        )
+        # self.app.add_url_rule(
+        #     "/orden_produccion/<int:presupuesto_id>",
+        #     "orden_produccion",
+        #     self.orden_produccion,
+        #     methods=["GET"],
+        # )
 
         self.app.add_url_rule(
             "/add_symbol", "add_symbol", self.add_symbol, methods=["POST"]
