@@ -517,23 +517,23 @@ class Pdf:
         flowables.append(spacer)  # Agregar un espacio
         flowables.append(KeepTogether(table))  # Agregar la tabla de cotizaciones
 
-        # Calcular la altura de las tablas
-        header_table_width, header_table_height = datos_cliente.wrap(
-            doc.width, doc.height
-        )
-        table_width, table_height = table.wrap(doc.width, doc.height)
-        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(
-            doc.width, doc.height
-        )
+        # # Calcular la altura de las tablas
+        # header_table_width, header_table_height = datos_cliente.wrap(
+        #     doc.width, doc.height
+        # )
+        # table_width, table_height = table.wrap(doc.width, doc.height)
+        # tabla_totales_width, tabla_totales_height = tabla_totales.wrap(
+        #     doc.width, doc.height
+        # )
 
         # Calcular espacio disponible en la página actual
-        remaining_space = (
-            doc.height - (header_table_height + spacer.height + table_height) - 75
-        )
-        spacer_height = remaining_space - tabla_totales_height - 60
-        totals_spacer = Spacer(-1, spacer_height)
+        # remaining_space = (
+        #     doc.height - (header_table_height + spacer.height + table_height) - 75
+        # )
+        # spacer_height = remaining_space - tabla_totales_height - 60
+        # totals_spacer = Spacer(-1, spacer_height)
 
-        flowables.append(totals_spacer)
+        # flowables.append(totals_spacer)
 
         # Agregar un salto de página a los flowables
         flowables.append(tabla_totales)
