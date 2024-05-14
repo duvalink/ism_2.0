@@ -166,7 +166,7 @@ class Pdf:
         telefono_empresa = Paragraph(
             datos_ism["ism_telefono"], style=minimal_leading_style
         )
-        documento_tipo = Paragraph(datos_ism["documento_tipo"], style=doc_type_style)
+        documento_tipo = Paragraph(datos_ism["documento_tipo"], style=doc_type_style) if datos_ism.get("documento_tipo") else ""
 
         # Tabla de datos de la empresa
         datos_empresa = Table(
