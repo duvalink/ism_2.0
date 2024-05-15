@@ -534,7 +534,6 @@ class Pdf:
         totals_spacer = Spacer(-1, spacer_height)
 
         flowables.append(totals_spacer)
-        tabla_totales=Table(data)
 
         # Agregar un salto de página a los flowables
         flowables.append(tabla_totales)
