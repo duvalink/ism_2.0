@@ -16,7 +16,6 @@ with app.app_context():
     # db.drop_all()
     db.create_all()
 
-# Solo comentario de prueba
 
 
 presupuesto = Presupuesto(app)
