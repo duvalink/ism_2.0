@@ -4,3 +4,4 @@ presupuestos_pdf/*.pdf
 remisiones/*.pdf
 /*.pdf
 *.pyc
+.idx
