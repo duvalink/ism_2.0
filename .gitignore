@@ -5,3 +5,4 @@ remisiones/*.pdf
 /*.pdf
 *.pyc
 .idx
+.vscode
