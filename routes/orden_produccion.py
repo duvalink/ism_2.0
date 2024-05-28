@@ -214,16 +214,37 @@ class Pdf:
                 "Presupuesto: ",
             ],
             [
-                "Fecha:",
-                datos_presupuesto["fecha"],
+                "Fecha Inicio:",
+                "",
                 "",
                 "",
                 "",
                 datos_presupuesto["id_presupuesto"],
             ],
+            [
+                "Fecha Fin:",
+                "",
+                "",
+                "",
+            ],
         ]
 
         return datos_cliente
+    
+    def crear_datos_orden_proceso(self, styleN):
+        datos_orden_proceso=[
+            [
+                "Horas",
+                "Esclavo",
+                "Actividades",
+            ],
+            [],
+            [],
+            [],
+            [],
+            [],
+        ]
+        return datos_orden_proceso
 
     def obtener_nombre_archivo_unico(self, presupuesto_id):
         # Nombre base del archivo
@@ -349,8 +370,10 @@ class Pdf:
         datos_cliente = self.crear_datos_cliente(
             datos_presupuesto, contactos_presupuesto, styleN
         )
-
-        datos_cliente = Table(datos_cliente, colWidths=[50, "*", 20, 40, 70])
+        
+        # MEDIDAS DE ESPACIO EN LOS DATOS DEL CLIENTE Y FECHA
+        datos_cliente = Table(datos_cliente, colWidths=[70, "*", 20, 40, 70])
+        
 
         # Estilo de la tabla de encabezado
         datos_cliente.setStyle(
@@ -384,6 +407,23 @@ class Pdf:
                     ),  # Combinar celdas de la fila de atencion")
                     # alignacion vertical centrada de la celda "Atencion"
                     ("VALIGN", (0, 3), (0, 3), "TOP"),
+                ]
+            )
+        )
+        
+        
+        datos_orden_proceso=self.crear_datos_orden_proceso(styleN)
+
+        datos_orden_proceso=Table(datos_orden_proceso, colWidths=[40,"*",350,10])
+
+        datos_orden_proceso.setStyle(
+            TableStyle(
+                [
+                    ("ALIGN", (0, 0), (-1, -1), "LEFT"),  # Alineación a la izquierda
+                    ("FONTSIZE", (0, 0), (-1, -1), 12),  # Tamaño de fuente
+                    ("FONTNAME",(0, 0), (-1, -1),"Helvetica-Bold",),  # Fuente negrita del id_presupuesto
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),  # Alineación a la izquierda
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
                 ]
             )
         )
@@ -440,27 +480,6 @@ class Pdf:
                 "",
                 "",
                 "",
-                "",
-                "",
-            ],
-            [
-                "",
-                "",
-                "",
-                "",
-                "",
-            ],
-            [
-                "",
-            ],
-            [""],
-            [
-                "",
-            ],
-            [
-                "",
-                "",
-                "",
                 "DIBUJO O ANEXAR HOJA DE DIBUJO",
             ],
         ]
@@ -476,44 +495,16 @@ class Pdf:
             TableStyle(
                 [
                     ("FONTNAME", (3, 0), (3, 1), "Helvetica-Bold"),
-                    # ALINEAR A LA DERECHA
-                    ("ALIGN", (3, 0), (3, 1), "RIGHT"),
-                    (
-                        "TEXTCOLOR",
-                        (5, 0),
-                        (5, 2),
-                        colors.whitesmoke,
-                    ),  # Color de texto para "MANO DE OBRA"
-                    # ("GRID", (6, 0), (7, 2), 1, colors.black),
-                    # SPAN
-                    ("SPAN", (0, 4), (1, 4)),
-                    ("SPAN", (3, 4), (4, 4)),
-                    ("FONTSIZE", (3, 4), (4, 4), 8),
-                    ("ALIGN", (3, 4), (4, 4), "CENTER"),
-                    # ALINEAR AL CENTRO
-                    ("ALIGN", (0, 4), (1, 4), "CENTER"),
-                    # NEGRITA
-                    ("FONTNAME", (0, 4), (1, 4), "Helvetica-Bold"),
-                    # FUENTE 13
-                    ("FONTSIZE", (0, 4), (1, 4), 13),
-                    ("SPAN", (0, 6), (2, 6)),
-                    # FONTNAME
-                    ("FONTNAME", (0, 6), (0, 6), "Helvetica-Bold"),
-                    ("SPAN", (3, 6), (-1, 6)),
-                    ("FONTSIZE", (3, 6), (3, 6), 8),
-                    ("FONTNAME", (3, 6), (3, 6), "Helvetica-Bold"),
-                    ("ALIGN", (7, 0), (7, 2), "RIGHT"),
-                    # NEGRITA
-                    ("FONTNAME", (7, 0), (7, 2), "Helvetica-Bold"),
                 ]
             )
         )
 
-        spacer = Spacer(0, 20)
+        spacer = Spacer(0, 5)
 
         # Agregar la tabla de información de la empresa
         flowables = [datos_empresa, spacer]
         flowables.append(datos_cliente)  # Agregar la tabla de encabezado
+        flowables.append(datos_orden_proceso)  # Agregar la tabla de encabezado
         flowables.append(spacer)  # Agregar un espacio
         flowables.append(KeepTogether(table))  # Agregar la tabla de cotizaciones
 
@@ -521,14 +512,13 @@ class Pdf:
         header_table_width, header_table_height = datos_cliente.wrap(
             doc.width, doc.height
         )
+        
         table_width, table_height = table.wrap(doc.width, doc.height)
-        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(
-            doc.width, doc.height
-        )
+        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(doc.width, doc.height)
 
         # Calcular espacio disponible en la página actual
         remaining_space = (
-            doc.height - (header_table_height + spacer.height + table_height) - 75
+            doc.height - (header_table_height + spacer.height + table_height) - 180
         )
         spacer_height = remaining_space - tabla_totales_height - 60
         totals_spacer = Spacer(-1, spacer_height)
