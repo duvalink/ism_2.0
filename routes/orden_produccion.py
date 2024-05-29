@@ -235,7 +235,7 @@ class Pdf:
         datos_orden_proceso=[
             [
                 "Horas",
-                "Esclavo",
+                "Empleado",
                 "Actividades",
             ],
             [],
