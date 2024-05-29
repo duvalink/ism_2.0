@@ -17,6 +17,7 @@ with app.app_context():
     db.create_all()
 
 
+
 presupuesto = Presupuesto(app)
 cliente = ControladorClientes(app)
 contacto = ControladorContactos(app)
