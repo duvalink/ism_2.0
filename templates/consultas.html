@@ -23,6 +23,24 @@
         </div>
     </form>
 
+    <style>
+        #progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
+        #progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+
 
 
     <div class="d-flex justify-content-between my-3">
@@ -57,23 +75,27 @@
                 <td class="fs-4">{{dato.id_presupuesto}}</td>
                 <td class="fs-5 text-center">{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
                 <td class="fs-5">{{dato.cliente.nombre}}</td>
-                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
+                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in
+                    presupuesto_contacto
                     else '' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
                 <td class="text-center">
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary fs-5"><i class="fas fa-search"></i></a>
                     <!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
-                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
-                        class="btn btn-success fs-5">Remision</a>
+                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}" class="btn btn-success fs-5"
+                        id="remisionLink">Remision</a>
                     <a href="{{ url_for('orden_produccion', presupuesto_id=dato.id_presupuesto)}}"
                         class="btn btn-info fs-5"><i class="fas fa-cogs"></i></a>
-                        <!-- ICONOS PARA BOTON DE ORDEN DE PRODUCCION -->
-                        <!-- fas fa-tasks -->
-                        <!-- fas fa-box -->
-                        <!-- fas fa-cogs -->
-                        <!-- fas fa-industry -->
+                    <!-- ICONOS PARA BOTON DE ORDEN DE PRODUCCION -->
+                    <!-- fas fa-tasks -->
+                    <!-- fas fa-box -->
+                    <!-- fas fa-cogs -->
+                    <!-- fas fa-industry -->
                 </td>
+                <div id="progress-container">
+                    <div id="progress-bar">0$</div>
+                </div>
             </tr>
             {% endfor %}
     </table>
@@ -95,5 +117,22 @@
         {% endif %}
     </div>
 </div>
+<script>
+    document.getElementById('remisionLink').onclick = function (event) {
+        event.preventDefault();
 
+        var progressBar = document.getElementById('progress-bar');
+        var width = 0;
+        var interval = setInterval(function () {
+            if (width >= 100) {
+                clearInterval(interval);
+                window.location.href = event.target.href;
+            } else {
+                width++;
+                progressBar.style.width = width + '%'
+                progressBar.innerHTML = width + '%'
+            }
+        }, 50)
+    }
+</script>
 {% endblock %}
