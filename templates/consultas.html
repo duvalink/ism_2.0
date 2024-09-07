@@ -22,27 +22,6 @@
             </button>
         </div>
     </form>
-
-    <style>
-        #progress-bar {
-            width: 0;
-            height: 30px;
-            background-color: #4caf50;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-        }
-
-        #progress-container {
-            width: 100%;
-            background-color: #f3f3f3;
-            border: 1px solid #ccc;
-            margin-top: 20px;
-        }
-    </style>
-
-
-
     <div class="d-flex justify-content-between my-3">
         {% if presupuestos.has_prev %}
         <a href="{{ url_for('consultas', page=1, fecha_busqueda=fecha_busqueda) }}" class="btn btn-primary">Primeros
@@ -70,9 +49,6 @@
             <th class="col-acciones" style="width: 250px;">ACCIONES</th>
         </thead>
         <tbody>
-            <div id="progress-container">
-                <div id="progress-bar">0$</div>
-            </div>
             {% for dato in presupuestos.items %}
             <tr class="align-middle">
                 <td class="fs-4">{{dato.id_presupuesto}}</td>
@@ -86,8 +62,8 @@
                     <a href="{{url_for('consultar_presupuesto', id_presupuesto=dato.id_presupuesto)}}"
                         class="btn btn-primary fs-5"><i class="fas fa-search"></i></a>
                     <!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
-                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}" class="btn btn-success fs-5"
-                        id="remisionLink">Remision</a>
+                    <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
+                        class="btn btn-success fs-5 remisionLink" id="">Remision</a>
                     <a href="{{ url_for('orden_produccion', presupuesto_id=dato.id_presupuesto)}}"
                         class="btn btn-info fs-5"><i class="fas fa-cogs"></i></a>
                     <!-- ICONOS PARA BOTON DE ORDEN DE PRODUCCION -->
@@ -117,25 +93,14 @@
             class="btn btn-primary">Registros más recientes</a>
         {% endif %}
     </div>
+    <div class="modal" id="modal">
+        <div class="progress-bar-container" id="progressBarContainer">
+            <span class="progress-percentage"></span>
+            <div class="progress-bar" id="myProgressBar"></div>
+        </div>
+    </div>
 </div>
-<script>
-    document.querySelectorAll('#remisionLink').forEach(function (link) {
-        link.onclick = function (event) {
-            event.preventDefault();
 
-            var progressBar = document.getElementById('progress-bar');
-            var width = 0;
-            var interval = setInterval(function () {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    window.location.href = event.target.href;
-                } else {
-                    width++;
-                    progressBar.style.width = width + '%';
-                    progressBar.innerHTML = width + '%';
-                }
-            }, 50);
-        };
-    });
-</script>
+<script src="{{ url_for('static', filename='js/barra_progreso.js') }}"></script>
+
 {% endblock %}
