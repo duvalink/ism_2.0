@@ -35,8 +35,7 @@ class Presupuesto_Partida(db.Model):
     presupuesto = db.relationship("Presupuesto", backref="presupuesto_partida")
 
     def __init__(
-        self, presupuesto_id, partida, descripcion, cantidad, precio, importe, material
-    ):
+        self, presupuesto_id, partida, descripcion, cantidad, precio, importe, material):
         self.presupuesto_id = presupuesto_id
         self.partida = partida
         self.descripcion = descripcion
@@ -44,3 +43,9 @@ class Presupuesto_Partida(db.Model):
         self.precio = precio
         self.importe = importe
         self.material = material
+
+class Presupuesto_Remision(db.model):
+    id_remision = db.Column(db.Integer, primary_key=True)
+    presupuesto_id=db>column(db.Integer, db.ForeignKey("presupuesto.id_presupuesto"))
+    fecha = db.Column(db.Date)
+
