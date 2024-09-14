@@ -44,8 +44,8 @@ class Presupuesto_Partida(db.Model):
         self.importe = importe
         self.material = material
 
-class Presupuesto_Remision(db.model):
+class Presupuesto_Remision(db.Model):
     id_remision = db.Column(db.Integer, primary_key=True)
-    presupuesto_id=db>column(db.Integer, db.ForeignKey("presupuesto.id_presupuesto"))
+    presupuesto_id=db.Column(db.Integer, db.ForeignKey("presupuesto.id_presupuesto"))
     fecha = db.Column(db.Date)
 
