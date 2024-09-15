@@ -21,13 +21,32 @@ from reportlab.lib.units import inch, mm
 from models.cliente import Cliente as ClienteModel
 from models.cliente import Contacto as ContactoModel
 from models.presupuesto import Presupuesto as PresupuestoModel
+from models.presupuesto import Presupuesto_Remision
 from models.atencion import PresupuestoContacto
 from utils.db import db
+import datetime
 import locale
 
 load_dotenv()
 
 pdf = Blueprint("pdf", __name__)
+
+
+def registrar_remision(presupuesto_id):
+        # SECCION PARA REGISTRAR EN BDD LAS REMISIONES GENERADAS
+        # Creamos una variable para
+    remision_existente = Presupuesto_Remision.query.filter_by(presupuesto_id=presupuesto_id).first()
+
+    if not remision_existente:
+        presupuesto = PresupuestoModel.query.get(presupuesto_id)
+        nueva_remision = Presupuesto_Remision(
+            presupuesto_id=presupuesto_id,
+            fecha=datetime.date.today(),
+            total=presupuesto.total,)
+        db.session.add(nueva_remision)
+        db.session.commit()
+
+        # FIN DE SECCION PARA REGISTRO DE REMISIONES
 
 
 class Pdf:
@@ -278,12 +297,16 @@ class Pdf:
 
         return nombre_archivo, ruta_pdf
 
+
     def remision(self, presupuesto_id):
         # Establecer el locale para los formatos de moneda
         locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
-
+        
         # Obtener el presupuesto
         presupuesto = PresupuestoModel.query.get(presupuesto_id)
+
+        registrar_remision(presupuesto_id)
+
         # Accede a los datos de la tabla presupuesto
         datos_presupuesto = self.datos_tabla_presupuesto(presupuesto)
 
