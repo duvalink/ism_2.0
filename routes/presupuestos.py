@@ -1186,34 +1186,6 @@ class Presupuesto:
             partida.partida = i
         db.session.commit()
 
-    # def orden_produccion(self, presupuesto_id):
-    #     # Mostrar datos de presupuesto
-    #     presupuesto = PresupuestoModel.query.get(presupuesto_id)
-    #     partidas = Presupuesto_Partida.query.filter_by(presupuesto_id=presupuesto_id).all()
-    #     cliente = ClienteModel.query.get(presupuesto.cliente_id)
-    #     return render_template("orden_produccion.html", presupuesto=presupuesto, partidas=partidas, cliente=cliente)
-
-    # INICIO SEGMENTO DE CODIGO
-    # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
-    # PERO SOLO FUNCIONA EN EL EQUIPO DONDE SE ESTA EJECUNTANDO EL PROGRAMA. NO FUNCIONA PARA LOS
-    # USUARIOS QUE SE CONECTAN A TRAVES DE LA RED LOCAL
-    # def on_f7():
-    #     keyboard.write("°")
-    #     return "Symbol added"
-
-    # def on_f8():
-    #     keyboard.write("#")
-    #     return "Symbol added"
-
-    # def on_f9():
-    #     keyboard.write("Ø")
-    #     return "Symbol added"
-
-    # keyboard.add_hotkey("f7", on_f7)
-    # keyboard.add_hotkey("f8", on_f8)
-    # keyboard.add_hotkey("f9", on_f9)
-
-    # FIN DEL SEGMENTO DE CODIGO
 
     # INICIO SEGMENTO DE CODIGO NUEVO, SUSITUYE AL ANTERIOR
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE UNA RUTA
