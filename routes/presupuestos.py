@@ -3,6 +3,7 @@ from models.cliente import Cliente as ClienteModel
 from models.cliente import Contacto as ContactoModel
 from models.presupuesto import Presupuesto as PresupuestoModel
 from models.presupuesto import Presupuesto_Partida
+from models.presupuesto import Presupuesto_Remision
 from models.atencion import PresupuestoContacto
 from datetime import datetime
 from utils.db import db
@@ -1185,7 +1186,6 @@ class Presupuesto:
             partida.partida = i
         db.session.commit()
 
-
     # def orden_produccion(self, presupuesto_id):
     #     # Mostrar datos de presupuesto
     #     presupuesto = PresupuestoModel.query.get(presupuesto_id)
@@ -1231,6 +1231,13 @@ class Presupuesto:
             return "Invalid symbol"
 
     # FIN DEL SEGMENTO DE CODIGO NUEVO
+
+    def mostrar_remisiones(self):
+        remisiones = Presupuesto_Remision.query.all()
+        total_suma = db.session.query(db.func.sum(Presupuesto_Remision.total)).scalar()
+        return render_template(
+            "remisiones.html", remisiones=remisiones, total_suma=total_suma
+        )
 
     def rutas(self):
         self.app.add_url_rule("/", "index", self.index, methods=["GET", "POST"])
@@ -1317,4 +1324,8 @@ class Presupuesto:
 
         self.app.add_url_rule(
             "/add_symbol", "add_symbol", self.add_symbol, methods=["POST"]
+        )
+
+        self.app.add_url_rule(
+            "/remisiones", "mostrar_remisiones", self.mostrar_remisiones
         )
