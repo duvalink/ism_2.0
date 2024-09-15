@@ -1205,7 +1205,7 @@ class Presupuesto:
     # FIN DEL SEGMENTO DE CODIGO NUEVO
 
     def mostrar_remisiones(self):
-        remisiones = Presupuesto_Remision.query.all()
+        remisiones = Presupuesto_Remision.query.order_by(Presupuesto_Remision.presupuesto_id).all()
         total_suma = db.session.query(db.func.sum(Presupuesto_Remision.total)).scalar()
         return render_template(
             "remisiones.html", remisiones=remisiones, total_suma=total_suma
