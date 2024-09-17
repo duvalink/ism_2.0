@@ -22,9 +22,6 @@
             </button>
         </div>
     </form>
-
-
-
     <div class="d-flex justify-content-between my-3">
         {% if presupuestos.has_prev %}
         <a href="{{ url_for('consultas', page=1, fecha_busqueda=fecha_busqueda) }}" class="btn btn-primary">Primeros
@@ -57,7 +54,8 @@
                 <td class="fs-4">{{dato.id_presupuesto}}</td>
                 <td class="fs-5 text-center">{{ dato.fecha.strftime('%d-%m-%Y') }}</td>
                 <td class="fs-5">{{dato.cliente.nombre}}</td>
-                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in presupuesto_contacto
+                <td class="fs-5">{{ presupuesto_contacto[dato.id_presupuesto].mensaje if dato.id_presupuesto in
+                    presupuesto_contacto
                     else '' }}</td>
                 <td>$ {{ '{:,.2f}'.format(dato.subtotal) if presupuestos else '0.00' }}</td>
                 <td class="text-center">
@@ -65,15 +63,16 @@
                         class="btn btn-primary fs-5"><i class="fas fa-search"></i></a>
                     <!-- CAMBIAR A ID_PRESUPUESTO CUANDO SE CAMBIEN LA FUNCION A 'consultar_presupuesto' -->
                     <a href="{{ url_for('remision', presupuesto_id=dato.id_presupuesto)}}"
-                        class="btn btn-success fs-5">Remision</a>
+                        class="btn btn-success fs-5 remisionLink" id="">Remision</a>
                     <a href="{{ url_for('orden_produccion', presupuesto_id=dato.id_presupuesto)}}"
                         class="btn btn-info fs-5"><i class="fas fa-cogs"></i></a>
-                        <!-- ICONOS PARA BOTON DE ORDEN DE PRODUCCION -->
-                        <!-- fas fa-tasks -->
-                        <!-- fas fa-box -->
-                        <!-- fas fa-cogs -->
-                        <!-- fas fa-industry -->
+                    <!-- ICONOS PARA BOTON DE ORDEN DE PRODUCCION -->
+                    <!-- fas fa-tasks -->
+                    <!-- fas fa-box -->
+                    <!-- fas fa-cogs -->
+                    <!-- fas fa-industry -->
                 </td>
+
             </tr>
             {% endfor %}
     </table>
@@ -94,6 +93,14 @@
             class="btn btn-primary">Registros más recientes</a>
         {% endif %}
     </div>
+    <div class="modal" id="modal">
+        <div class="progress-bar-container" id="progressBarContainer">
+            <span class="progress-percentage"></span>
+            <div class="progress-bar" id="myProgressBar"></div>
+        </div>
+    </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/barra_progreso.js') }}"></script>
 
 {% endblock %}

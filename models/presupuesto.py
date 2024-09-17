@@ -44,3 +44,19 @@ class Presupuesto_Partida(db.Model):
         self.precio = precio
         self.importe = importe
         self.material = material
+
+
+class Presupuesto_Remision(db.Model):
+    id_remision = db.Column(db.Integer, primary_key=True)
+    presupuesto_id = db.Column(db.Integer, db.ForeignKey("presupuesto.id_presupuesto"))
+    fecha = db.Column(db.Date)
+    total = db.Column(db.Float(10, 2))
+
+    def __init__(self, presupuesto_id, fecha, total):
+        self.presupuesto_id = presupuesto_id
+        self.fecha = fecha
+        presupuesto = Presupuesto.query.get(presupuesto_id)
+        if presupuesto:
+            self.total = presupuesto.total
+        else:
+            self.total = 0

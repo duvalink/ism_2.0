@@ -3,6 +3,7 @@ from models.cliente import Cliente as ClienteModel
 from models.cliente import Contacto as ContactoModel
 from models.presupuesto import Presupuesto as PresupuestoModel
 from models.presupuesto import Presupuesto_Partida
+from models.presupuesto import Presupuesto_Remision
 from models.atencion import PresupuestoContacto
 from datetime import datetime
 from utils.db import db
@@ -1186,35 +1187,6 @@ class Presupuesto:
         db.session.commit()
 
 
-    # def orden_produccion(self, presupuesto_id):
-    #     # Mostrar datos de presupuesto
-    #     presupuesto = PresupuestoModel.query.get(presupuesto_id)
-    #     partidas = Presupuesto_Partida.query.filter_by(presupuesto_id=presupuesto_id).all()
-    #     cliente = ClienteModel.query.get(presupuesto.cliente_id)
-    #     return render_template("orden_produccion.html", presupuesto=presupuesto, partidas=partidas, cliente=cliente)
-
-    # INICIO SEGMENTO DE CODIGO
-    # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE TECLAS DE FUNCION
-    # PERO SOLO FUNCIONA EN EL EQUIPO DONDE SE ESTA EJECUNTANDO EL PROGRAMA. NO FUNCIONA PARA LOS
-    # USUARIOS QUE SE CONECTAN A TRAVES DE LA RED LOCAL
-    # def on_f7():
-    #     keyboard.write("°")
-    #     return "Symbol added"
-
-    # def on_f8():
-    #     keyboard.write("#")
-    #     return "Symbol added"
-
-    # def on_f9():
-    #     keyboard.write("Ø")
-    #     return "Symbol added"
-
-    # keyboard.add_hotkey("f7", on_f7)
-    # keyboard.add_hotkey("f8", on_f8)
-    # keyboard.add_hotkey("f9", on_f9)
-
-    # FIN DEL SEGMENTO DE CODIGO
-
     # INICIO SEGMENTO DE CODIGO NUEVO, SUSITUYE AL ANTERIOR
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE UNA RUTA
     # LOS USUARIOS MIENTRAS ESTEN EN LA RED LOCAL YA PUEDEN AGREGAR SIMBOLOS ESPECIALES
@@ -1231,6 +1203,13 @@ class Presupuesto:
             return "Invalid symbol"
 
     # FIN DEL SEGMENTO DE CODIGO NUEVO
+
+    def mostrar_remisiones(self):
+        remisiones = Presupuesto_Remision.query.order_by(Presupuesto_Remision.presupuesto_id).all()
+        total_suma = db.session.query(db.func.sum(Presupuesto_Remision.total)).scalar()
+        return render_template(
+            "remisiones.html", remisiones=remisiones, total_suma=total_suma
+        )
 
     def rutas(self):
         self.app.add_url_rule("/", "index", self.index, methods=["GET", "POST"])
@@ -1317,4 +1296,8 @@ class Presupuesto:
 
         self.app.add_url_rule(
             "/add_symbol", "add_symbol", self.add_symbol, methods=["POST"]
+        )
+
+        self.app.add_url_rule(
+            "/remisiones", "mostrar_remisiones", self.mostrar_remisiones
         )
