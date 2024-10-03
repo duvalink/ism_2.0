@@ -15,14 +15,10 @@ load_dotenv()
 
 correo = Blueprint("correo", __name__)
 
-email_server ="smtp.gmail.com" 
-email_server_port =587
-email_user ="correo@gmail.com"
-email_pass ="clave_aplicacion_gmail"
-# email_server = os.getenv("EMAIL_SERVER")
-# email_server_port = os.getenv("EMAIL_SERVER_PORT")
-# email_user = os.getenv("EMAIL_USER")
-# email_pass = os.getenv("EMAIL_PASS")
+email_server = os.getenv("EMAIL_SERVER")
+email_server_port = os.getenv("EMAIL_SERVER_PORT")
+email_user = os.getenv("EMAIL_USER")
+email_pass = os.getenv("EMAIL_PASS")
 
 
 class Correo:
@@ -100,7 +96,7 @@ class Correo:
         No retorna nada.
         """
         smtp_server = email_server
-        puerto = email_server_port  # Convertir el puerto a entero si es necesario
+        puerto = int(email_server_port)  # Convertir el puerto a entero si es necesario
         usuario = email_user
         contrasena = email_pass
 
