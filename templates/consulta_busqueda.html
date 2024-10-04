@@ -5,7 +5,28 @@
 
 
 {% block body %}
-<h1>Hola mundo</h1>
+<h1 class="text-center mt-5">BUSQUEDA DE PRESUPUESTOS POR PALABRA</h1>
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>FECHA</th>
+            <th>CLIENTE</th>
+            <th>MENSAJE</th>
+            <th>SUB-TOTAL</th>
+            <th>ACCIONES</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>03/10/2024</td>
+                <td>BIMBO</td>
+                <td style="font-size: .8em;">MENSAJE DE PRUEBA</td>
+                <td>$ 1,000.00</td>
+                <td><a href="#" class="btn btn-success fs-5">Remision</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
-
