@@ -1186,6 +1186,12 @@ class Presupuesto:
             partida.partida = i
         db.session.commit()
 
+    def consulta_busqueda(self):
+        if request.method == "POST":
+            palabra = request.form.get('buscar')
+            print(palabra)
+            return render_template("consulta_busqueda.html", palabra=palabra)
+        return redirect(url_for('index'))
 
     # INICIO SEGMENTO DE CODIGO NUEVO, SUSITUYE AL ANTERIOR
     # EL SIGUIENTE CODIGO, ES PARA AGREGAR SIMBOLOS ESPECIALES A TRAVES DE UNA RUTA
@@ -1296,6 +1302,10 @@ class Presupuesto:
 
         self.app.add_url_rule(
             "/add_symbol", "add_symbol", self.add_symbol, methods=["POST"]
+        )
+
+        self.app.add_url_rule(
+            "/consulta_busqueda", "consulta_busqueda", self.consulta_busqueda, methods=["POST"]
         )
 
         self.app.add_url_rule(
