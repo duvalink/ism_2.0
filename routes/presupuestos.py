@@ -1188,9 +1188,10 @@ class Presupuesto:
 
     def consulta_busqueda(self):
         if request.method == "POST":
-            palabra = request.form.get('buscar')
-            print(palabra)
-            return render_template("consulta_busqueda.html", palabra=palabra)
+            presupuesto_id = request.form.get('buscar')
+            print(presupuesto_id)
+            if presupuesto_id:
+                return redirect(url_for('remision', presupuesto_id=int(presupuesto_id)))
         return redirect(url_for('index'))
 
     # INICIO SEGMENTO DE CODIGO NUEVO, SUSITUYE AL ANTERIOR
