@@ -274,10 +274,10 @@ class Pdf:
         doc = SimpleDocTemplate(
             nombre_archivo,
             pagesize=letter,
-            leftMargin=10 * mm,  # Margen izquierdo de 20 mm
-            rightMargin=10 * mm,  # Margen derecho de 20 mm
-            topMargin=5 * mm,  # Margen superior de 20 mm
-            bottomMargin=8 * mm,  # Margen inferior de 20 mm
+            leftMargin=8 * mm,  # Margen izquierdo de 20 mm
+            rightMargin=8 * mm,  # Margen derecho de 20 mm
+            topMargin=3 * mm,  # Margen superior de 20 mm
+            bottomMargin=5 * mm,  # Margen inferior de 20 mm
         )
 
         # Logo de la empresa
@@ -289,8 +289,8 @@ class Pdf:
 
         # Estilos
         styles = getSampleStyleSheet()
-        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=10, leading=11))
-        styles.add(ParagraphStyle(name="DescripcionStyleSmall", fontSize=8, leading=9))
+        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=7, leading=8))
+        styles.add(ParagraphStyle(name="DescripcionStyleSmall", fontSize=7, leading=8))
         styleN = styles["Normal"]
 
         # Estilo de encabezado
@@ -300,8 +300,8 @@ class Pdf:
         # Estilo personalizado para el parrafo con un espacio entre lineas minimo
         minimal_leading_style = ParagraphStyle(
             name="MinimalLeading",
-            fontSize=10,
-            leading=11,  # Valor que define el espacio entre lineas, ajustar segun necesidad
+            fontSize=9,
+            leading=9,  # Valor que define el espacio entre lineas, ajustar segun necesidad
             alignment=1,  # Alineacion vertical
         )
 
@@ -564,9 +564,9 @@ class Pdf:
 
         # Calcular espacio disponible en la página actual
         remaining_space = (
-            doc.height - (header_table_height + spacer.height + table_height) - 75
+            doc.height - (header_table_height + spacer.height + table_height) - 10
         )
-        spacer_height = remaining_space - tabla_totales_height - 60
+        spacer_height = remaining_space - tabla_totales_height - 55
         totals_spacer = Spacer(-1, spacer_height)
 
         flowables.append(totals_spacer)
