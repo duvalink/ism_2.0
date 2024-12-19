@@ -140,13 +140,9 @@ class Presupuesto:
     def index(self):
         """
         Controlador para la página de inicio.
-
         Esta función se encarga de manejar las solicitudes GET y POST para la página de inicio.
-
         En una solicitud GET, la función obtiene una lista de todos los clientes y los datos del presupuesto y las partidas de la sesión actual, y renderiza la plantilla de la página de inicio con estos datos.
-
         En una solicitud POST, la función recibe los datos de una nueva partida, calcula los totales, agrega la partida a la lista de partidas de la sesión actual, guarda la partida en la base de datos, y redirige al usuario a la página de inicio.
-
         Returns:
             str: El HTML de la página de inicio.
 
@@ -197,13 +193,9 @@ class Presupuesto:
     ):
         """
         Crea un nuevo presupuesto y lo agrega a la base de datos.
-
         Esta función toma varios valores, crea un nuevo objeto de presupuesto con esos valores, y lo agrega a la base de datos.
-
         Los valores que se utilizan para crear el presupuesto son la fecha, el ID del cliente, la mano de obra, los materiales, el subtotal, el IVA y el total.
-
         Después de agregar el presupuesto a la base de datos, la función realiza un flush para obtener el ID del presupuesto.
-
         Finalmente, la función devuelve el objeto de presupuesto.
 
         Args:
@@ -235,9 +227,7 @@ class Presupuesto:
     ):
         """
         Actualiza los valores de un presupuesto.
-
         Esta función toma un objeto de presupuesto y varios valores, y actualiza los valores del presupuesto con los valores proporcionados.
-
         Los valores que se actualizan son la mano de obra, los materiales, el subtotal, el IVA y el total.
 
         Args:
