@@ -22,11 +22,8 @@ class Presupuesto:
     def calcular_totales(self, importe, iva_porcentaje):
         """
         Calcula los totales para la sesión actual.
-
         Esta función toma un importe, lo suma al subtotal de la sesión, y luego calcula el IVA, el total, la mano de obra y los materiales basándose en el subtotal.
-
         El IVA se calcula como el 8% del subtotal, el total se calcula como la suma del subtotal y el IVA, la mano de obra se calcula como el 40% del subtotal, y los materiales se calculan como el 60% del subtotal.
-
         Si alguna de las claves no está en la sesión, la función la inicializa a 0.0.
 
         Args:
@@ -54,11 +51,8 @@ class Presupuesto:
     def agregar_partidas(self, descripcion, cantidad, precio, importe, material):
         """
         Agrega una nueva partida a la lista de partidas de la sesión actual.
-
         Esta función toma varios valores, crea un nuevo diccionario con esos valores y los valores actuales de la sesión, y lo agrega a la lista de partidas de la sesión.
-
         Los valores que se utilizan para crear la partida son la descripción, la cantidad, el precio, el importe, el material, el subtotal, el IVA, el total, la mano de obra y los materiales.
-
         Después de agregar la partida a la lista, la función actualiza la lista de partidas de la sesión con la nueva lista y aumenta el contador de partidas.
 
         Args:
@@ -95,13 +89,9 @@ class Presupuesto:
     def recepcion_datos(self):
         """
         Recibe los datos de una nueva partida desde el formulario de la página de inicio.
-
         Esta función obtiene los valores de los campos del formulario de la página de inicio, los procesa si es necesario, y los devuelve.
-
         Los valores que se obtienen son la fecha actual, la descripción, la cantidad, el precio, el importe, el material y el ID del cliente.
-
         Si la descripción o el material están en minúsculas, la función los convierte a mayúsculas.
-
         Si la lista de partidas no está en la sesión, la función la inicializa.
 
         Returns:
