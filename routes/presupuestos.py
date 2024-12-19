@@ -256,13 +256,11 @@ class Presupuesto:
 
         Esta función toma un ID de presupuesto y realiza una consulta a la base de datos para obtener la última partida del presupuesto.
         La consulta filtra las partidas por el ID del presupuesto, las ordena en orden descendente por el número de partida, y obtiene la primera partida.
-
         Si no se encuentra ninguna partida, la función devuelve 0.
         Si se encuentra una partida, la función devuelve el número de la partida.
 
         Args:
             presupuesto_id (int): El ID del presupuesto para obtener el número de la última partida.
-
         Returns:
             int: El número de la última partida, o 0 si no se encuentra ninguna partida.
 
@@ -284,12 +282,10 @@ class Presupuesto:
     def agregar_partida(self, presupuesto_id, partida):
         """
         Agrega una nueva partida a un presupuesto.
-
         Esta función toma un ID de presupuesto y un diccionario de partida, y crea una nueva partida para el presupuesto.
         Primero, obtiene el número de la última partida del presupuesto y crea un nuevo número de partida incrementándolo en uno.
         Luego, crea una nueva instancia de Presupuesto_Partida con los datos de la partida y el nuevo número de partida,
         y la agrega a la base de datos.
-
         Después de confirmar los cambios en la base de datos, la función recalcula los totales del presupuesto.
 
         Args:
@@ -325,25 +321,18 @@ class Presupuesto:
     def guardar_partida(self, fecha, cliente_id):
         """
         Guarda una partida en un presupuesto.
-
         Esta función toma una fecha y un ID de cliente, y recupera varios valores de la sesión, como la mano de obra, los materiales, el subtotal, el IVA y el total.
-
         Si la sesión contiene un ID de presupuesto, la función intenta obtener el presupuesto de la base de datos.
         Si no se encuentra el presupuesto, crea uno nuevo con los valores de la sesión y lo guarda en la base de datos.
         Si se encuentra el presupuesto, lo actualiza con los valores de la sesión.
-
         Si la sesión no contiene un ID de presupuesto, la función crea un nuevo presupuesto con los valores de la sesión y lo guarda en la base de datos.
-
         A continuación, para cada partida en la sesión, la función agrega la partida al presupuesto.
-
         Después de confirmar los cambios en la base de datos, la función vacía la lista de partidas en la sesión.
-
         Finalmente, devuelve el ID del presupuesto.
 
         Args:
             fecha (date): La fecha para el presupuesto.
             cliente_id (int): El ID del cliente para el presupuesto.
-
         Returns:
             int: El ID del presupuesto.
 
@@ -385,15 +374,12 @@ class Presupuesto:
     def obtener_datos_presupuesto(self, id_presupuesto):
         """
         Obtiene los datos de un presupuesto y sus partidas.
-
         Esta función toma un ID de presupuesto y realiza dos consultas a la base de datos:
         una para obtener el presupuesto y otra para obtener todas las partidas asociadas a ese presupuesto.
-
         Finalmente, devuelve el presupuesto y las partidas como una tupla.
 
         Args:
             id_presupuesto (int): El ID del presupuesto para obtener los datos.
-
         Returns:
             tuple: Una tupla que contiene el presupuesto y las partidas.
 
@@ -411,16 +397,13 @@ class Presupuesto:
     def agregar_partida_presupuesto(self, presupuesto_id):
         """
         Agrega una nueva partida a un presupuesto.
-
         Esta función toma un ID de presupuesto y los datos del formulario de la solicitud para crear una nueva partida.
         Primero, obtiene los datos del formulario y los convierte a mayúsculas si es necesario.
         Luego, obtiene el número de la última partida del presupuesto y crea un nuevo número de partida incrementándolo en uno.
 
         A continuación, crea una nueva instancia de Presupuesto_Partida con los datos del formulario y el nuevo número de partida,
         y la agrega a la base de datos.
-
         Después de confirmar los cambios en la base de datos, la función recalcula los totales del presupuesto y confirma los cambios de nuevo.
-
         Finalmente, redirige al usuario a la página de consulta del presupuesto.
 
         Args:
@@ -473,14 +456,10 @@ class Presupuesto:
 
         Esta función toma un ID de partida y realiza una consulta a la base de datos para obtener la partida.
         Si no se encuentra la partida, la función imprime un mensaje de error y redirige al índice.
-
         Si se encuentra la partida y el método de la solicitud es POST, la función actualiza los campos de la partida con los valores del formulario de la solicitud.
         Luego, calcula el importe multiplicando la cantidad por el precio, y actualiza el campo de importe de la partida.
-
         A continuación, obtiene el presupuesto asociado a la partida y actualiza el ID del cliente con el valor del formulario de la solicitud.
-
         Después de confirmar los cambios en la base de datos, la función recalcula los totales del presupuesto.
-
         Finalmente, si la sesión contiene un ID de presupuesto, la función redirige al índice. Si no, redirige a la consulta del presupuesto.
 
         Args:
@@ -532,13 +511,10 @@ class Presupuesto:
     def recalcular_totales(self, presupuesto_id, iva_porcentaje):
         """
         Recalcula los totales para un presupuesto específico.
-
         Esta función toma un ID de presupuesto y realiza una consulta a la base de datos para obtener el presupuesto.
         Luego, recalcula el subtotal sumando los importes de todas las partidas asociadas al presupuesto.
-
         A continuación, calcula la mano de obra y los materiales como porcentajes del subtotal (40% y 60% respectivamente),
         y el IVA como el 8% del subtotal.
-
         Finalmente, calcula el total sumando el subtotal y el IVA, y confirma los cambios en la base de datos.
 
         Args:
@@ -566,15 +542,12 @@ class Presupuesto:
     def mostrar_contactos(self, id_cliente):
         """
         Muestra los contactos asociados a un cliente específico.
-
         Esta función toma un ID de cliente y realiza una consulta a la base de datos para obtener el cliente.
         Si no se encuentra al cliente, la función imprime un mensaje de error y devuelve una lista vacía.
-
         Si se encuentra al cliente, la función obtiene los contactos del cliente y los devuelve.
 
         Args:
             id_cliente (int): El ID del cliente para obtener los contactos.
-
         Returns:
             list of ContactoModel: Una lista de los contactos asociados al cliente.
 
@@ -595,16 +568,12 @@ class Presupuesto:
     def presupuesto_contactos(self):
         """
         Gestiona la consulta de contactos para un presupuesto.
-
         Esta función obtiene una lista de clientes y contactos utilizando la función `obtener_clientes_y_contactos`.
         Luego, obtiene el ID del cliente del formulario de la solicitud.
-
         Si se proporciona un ID de cliente, la función busca al cliente en la base de datos. Si no se encuentra al cliente,
         la función imprime un mensaje de error y devuelve una plantilla con una lista de clientes y listas vacías para los contactos y presupuestos.
-
         Si se encuentra al cliente, la función obtiene los contactos del cliente y devuelve una plantilla con una lista de clientes,
         los contactos del cliente y una lista vacía para los presupuestos.
-
         Si no se proporciona un ID de cliente, la función devuelve una plantilla con una lista de clientes y listas vacías para los contactos y presupuestos.
 
         Ejemplo de uso:
@@ -642,13 +611,10 @@ class Presupuesto:
     def atencion(self):
         """
         Gestiona la atención a los contactos para un presupuesto específico.
-
         Esta función obtiene el ID del presupuesto de la sesión y el mensaje del formulario de la solicitud.
         Luego, confirma los contactos para el presupuesto y obtiene los IDs de los contactos asignados al presupuesto.
-
         Para cada ID de contacto, la función comprueba si el contacto ya está asociado al presupuesto. Si no lo está, crea un nuevo
         objeto PresupuestoContacto y lo agrega a la sesión de la base de datos.
-
         Finalmente, la función confirma los cambios en la base de datos y redirige al usuario a la página de generación de PDF para el presupuesto.
 
         Ejemplo de uso:
@@ -687,15 +653,12 @@ class Presupuesto:
     def obtener_contactos_presupuesto(self, id_presupuesto):
         """
             Obtiene los contactos asignados a un presupuesto específico.
-
         Esta función toma un ID de presupuesto y realiza una consulta a la base de datos para obtener los presupuestos de contacto
         asociados a ese presupuesto. Luego, crea una lista de los IDs de los contactos asignados a ese presupuesto.
-
         La función imprime la lista de IDs de los contactos asignados y luego la devuelve.
 
         Args:
             id_presupuesto (int): El ID del presupuesto para obtener los contactos.
-
         Returns:
             list of int: Una lista de los IDs de los contactos asignados al presupuesto.
 
@@ -716,16 +679,11 @@ class Presupuesto:
     def confirmar_contactos_presupuesto(self, id_presupuesto):
         """
             Confirma los contactos para un presupuesto específico.
-
         Esta función toma un ID de presupuesto y luego obtiene los contactos seleccionados y el mensaje del formulario de la solicitud.
         Luego, obtiene los contactos que ya están asignados al presupuesto.
-
         La función determina qué contactos se han agregado y cuáles se han eliminado comparando los contactos seleccionados con los contactos asignados.
-
         Para cada contacto agregado, la función crea un nuevo objeto PresupuestoContacto y lo agrega a la sesión de la base de datos.
-
         Para cada contacto eliminado, la función busca el objeto PresupuestoContacto correspondiente en la base de datos y lo elimina de la sesión.
-
         Finalmente, la función confirma los cambios en la base de datos.
 
         Args:
@@ -766,14 +724,12 @@ class Presupuesto:
     def consulta_mensajes_contacto(self, presupuesto_contacto_ids):
         """
             Consulta los mensajes de presupuesto de contacto para una lista de IDs de presupuesto de contacto.
-
         Esta función toma una lista de IDs de presupuesto de contacto, realiza una consulta a la base de datos para obtener
         los presupuestos de contacto correspondientes, y luego crea un diccionario que mapea cada ID de presupuesto de contacto
         a su objeto de presupuesto de contacto correspondiente.
 
         Args:
             presupuesto_contacto_ids (list of int): La lista de IDs de presupuesto de contacto a consultar.
-
         Returns:
             dict of {int: PresupuestoContacto}: Un diccionario que mapea cada ID de presupuesto de contacto a su objeto de presupuesto de contacto correspondiente.
 
@@ -795,12 +751,9 @@ class Presupuesto:
     def consulta_presupuesto_contacto(self):
         """
         Consulta los presupuestos de un contacto específico y renderiza una plantilla con los detalles.
-
         Esta función obtiene los clientes y los contactos, y luego determina el ID del contacto basándose en si la solicitud es POST o GET.
         Luego, realiza una consulta a la base de datos para obtener los presupuestos asociados a ese contacto y los pagina.
-
         La función también obtiene un diccionario de mensajes para cada presupuesto de contacto.
-
         Finalmente, la función renderiza una plantilla con los presupuestos, los clientes, el contacto, el número total de páginas,
         el ID del contacto y los mensajes de presupuesto de contacto.
 
@@ -842,18 +795,14 @@ class Presupuesto:
     def consultar_presupuesto(self, id_presupuesto):
         """
         Consulta un presupuesto específico y renderiza una plantilla con los detalles.
-
         Esta función toma un ID de presupuesto, consulta el presupuesto y sus partidas asociadas en la base de datos,
         y luego obtiene el ID del cliente asociado al presupuesto.
-
         La función también obtiene los contactos del cliente y los contactos asignados al presupuesto.
-
         Finalmente, la función guarda el ID del presupuesto en la sesión y renderiza una plantilla con los detalles del presupuesto,
         los clientes, las partidas, el ID del cliente, los contactos y los contactos asignados.
 
         Args:
             id_presupuesto (int): El ID del presupuesto a consultar.
-
         Returns:
             str: El HTML renderizado de la plantilla "consultar_presupuesto.html".
 
@@ -888,16 +837,13 @@ class Presupuesto:
     def query_paginado(self, query, per_page):
         """
         Pagina una consulta de presupuestos.
-
         Esta función toma una consulta y un número de presupuestos por página, y luego pagina la consulta. La página actual
         se obtiene de la solicitud.
-
         La función también calcula el número total de páginas.
 
         Args:
             query (flask_sqlalchemy.BaseQuery): La consulta a paginar.
             per_page (int): El número de presupuestos por página.
-
         Returns:
             flask_sqlalchemy.Pagination, int: Los presupuestos paginados y el número total de páginas.
 
@@ -920,12 +866,9 @@ class Presupuesto:
     def consultas(self):
         """
         Realiza una consulta de presupuestos y renderiza una plantilla con los resultados.
-
         Esta función realiza una consulta a la base de datos para obtener todos los presupuestos, ordenados en orden descendente
         por ID de presupuesto. Luego, filtra los presupuestos por fecha y los pagina.
-
         La función también obtiene un diccionario de mensajes para cada presupuesto.
-
         Finalmente, la función renderiza una plantilla con los resultados de la consulta, la fecha de búsqueda, el total de páginas
         y la información de contacto del presupuesto.
 
@@ -957,14 +900,12 @@ class Presupuesto:
     def consulta_mensajes(self, presupuesto_ids):
         """
         Realiza una consulta de mensajes para una lista de presupuestos.
-
         Esta función toma una lista de IDs de presupuestos y realiza una consulta a la base de datos para obtener
         todos los mensajes asociados a esos presupuestos. Los resultados se devuelven en un diccionario donde las
         claves son los IDs de los presupuestos y los valores son las instancias de PresupuestoContacto.
 
         Args:
             presupuesto_ids (list): Una lista de IDs de presupuestos.
-
         Returns:
             dict: Un diccionario donde las claves son los IDs de los presupuestos y los valores son las instancias
                   de PresupuestoContacto.
@@ -988,11 +929,9 @@ class Presupuesto:
     def consultasPorFecha(self, query):
         """
         Filtra una consulta de presupuestos por fecha.
-
         Esta función toma una consulta SQLAlchemy y añade un filtro para limitar los resultados a los presupuestos
         que tienen una fecha dentro de un mes específico. El mes se especifica en el parámetro "fecha_busqueda" de
         la solicitud, que debe ser una cadena en el formato "YYYY-MM".
-
         Si "fecha_busqueda" no está presente en la solicitud, la función devuelve la consulta sin modificar.
 
         Args:
@@ -1032,12 +971,9 @@ class Presupuesto:
     def consulta_cliente(self):
         """
         Realiza una consulta de presupuestos para un cliente específico y renderiza una plantilla con los resultados.
-
         Esta función obtiene el ID del cliente de la solicitud o de la sesión, y luego realiza una consulta a la base de datos
         para obtener todos los presupuestos para ese cliente. Los presupuestos se ordenan en orden descendente por ID de presupuesto.
-
         La función también obtiene una lista de todos los clientes y un diccionario de mensajes para cada presupuesto.
-
         Finalmente, la función renderiza una plantilla con los resultados de la consulta y la información del cliente.
 
         Returns:
@@ -1075,11 +1011,9 @@ class Presupuesto:
     def obtener_clientes_y_contactos(self):
         """
         Obtiene una lista de todos los clientes y un contacto específico.
-
         Esta función realiza dos consultas a la base de datos. Primero, obtiene una lista de todos los clientes
         utilizando el modelo ClienteModel. Luego, obtiene un contacto específico utilizando el modelo ContactoModel.
         El ID del contacto se obtiene del formulario de solicitud.
-
         Returns:
             tuple: Una tupla que contiene dos elementos:
                 - Una lista de todos los clientes. Cada cliente es una instancia de ClienteModel.
@@ -1109,18 +1043,14 @@ class Presupuesto:
     def borrar_partida(self, id_partida):
         """
         Borra una partida específica y actualiza el presupuesto correspondiente.
-
         Esta función toma un ID de partida, busca la partida en la base de datos y la borra. Luego, reordena las partidas
         restantes y recalcula los totales del presupuesto.
-
         Si la partida no se encuentra, la función redirige al usuario al índice.
-
         Después de borrar la partida, la función redirige al usuario al índice si se está creando un nuevo presupuesto,
         o de vuelta al presupuesto si se está consultando un presupuesto existente.
 
         Args:
             id_partida (int): El ID de la partida a borrar.
-
         Returns:
             Werkzeug Response: Una respuesta de redirección al índice o al presupuesto.
 
@@ -1155,15 +1085,12 @@ class Presupuesto:
     def reordenar_partidas(self, presupuesto_id):
         """
         Reordena las partidas de un presupuesto específico.
-
         Esta función toma un ID de presupuesto, busca todas las partidas asociadas a ese presupuesto en la base de datos,
         y luego las reordena. El orden de las partidas se establece en función de su posición en la lista de partidas.
-
         Después de reordenar las partidas, la función guarda los cambios en la base de datos.
 
         Args:
             presupuesto_id (int): El ID del presupuesto cuyas partidas se van a reordenar.
-
         Ejemplo de uso:
 
         >>> presupuestos = Presupuestos()
