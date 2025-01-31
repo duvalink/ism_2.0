@@ -46,7 +46,7 @@ class Correo:
         El mensaje de correo electrónico creado.
         """
         mensaje = MIMEMultipart()
-        mensaje["From"] = "Correo de prueba"
+        mensaje["From"] = "Industrial Shop Metalic"
         mensaje["To"] = ", ".join(destinatarios)
         mensaje["Subject"] = asunto
         mensaje.attach(MIMEText(cuerpo, "plain"))
