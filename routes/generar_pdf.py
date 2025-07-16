@@ -71,12 +71,12 @@ class Pdf:
             "id_presupuesto": presupuesto.id_presupuesto,
         }
 
-    def datos_tabla_contacto(self, presupuesto_id):
-        presupuesto = db.session.query(Presupuesto).filter_by(id=presupuesto_id).first()
+    def datos_tabla_contacto(self, presupuesto_id, presupuesto):
+        cliente = ClienteModel.query.get(presupuesto.cliente_id)
         cliente_id = presupuesto.cliente_id
         # Condicion directa por ID
         if cliente_id == 6:
-            return "Departamento Correspondiente"
+            return "ALEXANDRA CABRERA"
         contactos_presupuesto = (
             db.session.query(ContactoModel)
             .join(
@@ -211,7 +211,7 @@ class Pdf:
         return datos_empresa
 
     def crear_datos_cliente(self, datos_presupuesto, contactos_presupuesto, styleN):
-        if contactos_presupuesto == "Departamento Correspondiente":
+        if contactos_presupuesto == "ALEXANDRA CABRERA":
             contactos_presupuest0_paragraph = Paragraph("", styleN)
         contactos_presupuest0_paragraph = Paragraph(contactos_presupuesto, styleN)
         datos_cliente = [
@@ -268,7 +268,7 @@ class Pdf:
         datos_presupuesto = self.datos_tabla_presupuesto(presupuesto)
 
         # Obtener los contactos del presupuesto
-        contactos_presupuesto = self.datos_tabla_contacto(presupuesto_id)
+        contactos_presupuesto = self.datos_tabla_contacto(presupuesto_id, presupuesto)
 
         # Acceder a los datos de la tabla presupuesto_partida a traves de la relacion con presupuesto
 
