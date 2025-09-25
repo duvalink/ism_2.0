@@ -26,6 +26,7 @@ from models.atencion import PresupuestoContacto
 from utils.db import db
 import datetime
 import locale
+from PyPDF2 import PdfReader, PdfWriter
 
 load_dotenv()
 
@@ -321,14 +322,14 @@ class Pdf:
         # Nombre base del archivo
         nombre_archivo, ruta_pdf = self.obtener_nombre_archivo_unico(presupuesto_id)
 
-        doc = SimpleDocTemplate(
-            nombre_archivo,
-            pagesize=letter,
-            leftMargin=10 * mm,  # Margen izquierdo de 20 mm
-            rightMargin=10 * mm,  # Margen derecho de 20 mm
-            topMargin=5 * mm,  # Margen superior de 20 mm
-            bottomMargin=8 * mm,  # Margen inferior de 20 mm
-        )
+        # doc = SimpleDocTemplate(
+        #     nombre_archivo,
+        #     pagesize=letter,
+        #     leftMargin=10 * mm,  # Margen izquierdo de 20 mm
+        #     rightMargin=10 * mm,  # Margen derecho de 20 mm
+        #     topMargin=5 * mm,  # Margen superior de 20 mm
+        #     bottomMargin=8 * mm,  # Margen inferior de 20 mm
+        # )
 
         # Logo de la empresa
         # logo_path = "./static/img/logoEmpresa.png"
@@ -602,14 +603,21 @@ class Pdf:
         flowables.append(spacer)  # Agregar un espacio
         flowables.append(KeepTogether(table))  # Agregar la tabla de cotizaciones
 
-        # Calcular la altura de las tablas
-        header_table_width, header_table_height = datos_cliente.wrap(
-            doc.width, doc.height
+        # 1. Crea el objeto doc ANTES de calcular tamaños
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=letter,
+            leftMargin=10 * mm,
+            rightMargin=10 * mm,
+            topMargin=5 * mm,
+            bottomMargin=8 * mm,
         )
+
+        # Ahora sí puedes calcular los tamaños
+        header_table_width, header_table_height = datos_cliente.wrap(doc.width, doc.height)
         table_width, table_height = table.wrap(doc.width, doc.height)
-        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(
-            doc.width, doc.height
-        )
+        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(doc.width, doc.height)
 
         # Calcular espacio disponible en la página actual
         remaining_space = (
@@ -622,9 +630,53 @@ class Pdf:
 
         # Agregar un salto de página a los flowables
         flowables.append(tabla_totales)
-        doc.build(flowables)
+        # doc.build(flowables)
 
-        return send_file(nombre_archivo, mimetype="application/pdf")
+        # 1. Genera el PDF de la remisión en memoria
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=letter,
+            leftMargin=10 * mm,
+            rightMargin=10 * mm,
+            topMargin=5 * mm,
+            bottomMargin=8 * mm,
+        )
+        doc.build(flowables)
+        buffer.seek(0)
+
+        # 2. Abre el PDF adicional (la hoja con la tabla)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        ruta_pdf_tabla = os.path.join(dir_path, "../static/hoja_tabla.pdf")
+        with open(ruta_pdf_tabla, "rb") as f:
+            pdf_tabla = PdfReader(f)
+            pdf_remision = PdfReader(buffer)
+            pdf_final = PdfWriter()
+
+            # 3. Agrega todas las páginas de la remisión
+            for page in pdf_remision.pages:
+                pdf_final.add_page(page)
+            # 4. Agrega todas las páginas del PDF adicional
+            for page in pdf_tabla.pages:
+                pdf_final.add_page(page)
+
+            # 5. Guarda el PDF combinado en memoria
+            output_buffer = BytesIO()
+            pdf_final.write(output_buffer)
+            output_buffer.seek(0)
+
+        # --- NUEVO: Guarda una copia en el directorio "remisiones" ---
+        with open(ruta_pdf, "wb") as copia_pdf:
+            copia_pdf.write(output_buffer.getbuffer())
+        output_buffer.seek(0)  # Vuelve a poner el buffer al inicio para la descarga
+
+        # 6. Envía el PDF combinado al usuario
+        return send_file(
+            output_buffer,
+            mimetype="application/pdf",
+            as_attachment=True,
+            download_name=nombre_archivo  # Usar el nombre generado
+        )
 
     def rutas(self):
         self.app.add_url_rule(
