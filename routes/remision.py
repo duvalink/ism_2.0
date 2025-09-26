@@ -340,7 +340,7 @@ class Pdf:
 
         # Estilos
         styles = getSampleStyleSheet()
-        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=10, leading=11))
+        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=8, leading=9))
         styles.add(ParagraphStyle(name="DescripcionStyleSmall", fontSize=8, leading=9))
         styleN = styles["Normal"]
 

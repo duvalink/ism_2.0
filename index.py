@@ -6,6 +6,7 @@ from routes.enviar_correo import Correo
 from routes.generar_pdf import Pdf
 from routes.remision import Pdf as Remision
 from routes.orden_produccion import Pdf as ordenProduccion
+from routes.r_interna import Pdf as R_interna
 from utils.db import db
 import webbrowser
 
@@ -25,6 +26,7 @@ correo = Correo(app)
 pdf = Pdf(app)
 remision = Remision(app)
 orden_produccion = ordenProduccion(app)
+r_interna = R_interna(app)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

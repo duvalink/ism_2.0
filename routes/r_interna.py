@@ -1,6 +1,7 @@
-from flask import Blueprint, redirect, url_for, request
+from flask import Blueprint, redirect, url_for, request, send_file
 from dotenv import load_dotenv
 import os
+import webbrowser
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
@@ -14,19 +15,39 @@ from reportlab.platypus import (
     KeepTogether,
     PageBreak,
     Image,
-    FrameBreak,
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch, mm
-from models.cliente import Cliente as ClienteModel, Contacto as ContactoModel
+from models.cliente import Cliente as ClienteModel
+from models.cliente import Contacto as ContactoModel
 from models.presupuesto import Presupuesto as PresupuestoModel
+from models.presupuesto import Presupuesto_Remision
 from models.atencion import PresupuestoContacto
 from utils.db import db
+import datetime
 import locale
+from PyPDF2 import PdfReader, PdfWriter
 
 load_dotenv()
 
 pdf = Blueprint("pdf", __name__)
+
+
+def registrar_remision(presupuesto_id):
+        # SECCION PARA REGISTRAR EN BDD LAS REMISIONES GENERADAS
+        # Creamos una variable para
+    remision_existente = Presupuesto_Remision.query.filter_by(presupuesto_id=presupuesto_id).first()
+
+    if not remision_existente:
+        presupuesto = PresupuestoModel.query.get(presupuesto_id)
+        nueva_remision = Presupuesto_Remision(
+            presupuesto_id=presupuesto_id,
+            fecha=datetime.date.today(),
+            total=presupuesto.total,)
+        db.session.add(nueva_remision)
+        db.session.commit()
+
+        # FIN DE SECCION PARA REGISTRO DE REMISIONES
 
 
 class Pdf:
@@ -116,15 +137,15 @@ class Pdf:
             )
 
             # Verificar la longitud de descripcion_material
-            if len(descripcion_material) > 120 and len(descripcion_material) < 1000:
+            if len(descripcion_material) > 120 and len(descripcion_material) < 200:
                 estilo_descripcion = styles["DescripcionStyleSmall"]
             else:
                 estilo_descripcion = styles["DescripcionStyle"]
 
             descripcion = Paragraph(descripcion_material, style=estilo_descripcion)
             cantidad = partida["cantidad"]
-            precio = partida["precio"]
-            importe = partida["importe"]
+            precio = 0.00
+            importe = 0.00
 
             data.append(
                 [
@@ -143,7 +164,7 @@ class Pdf:
         ism_rfc = os.getenv("ISM_RFC")
         ism_direccion = os.getenv("ISM_DIRECCION")
         ism_telefono = os.getenv("ISM_TELEFONO")
-        documento_tipo = os.getenv("DOCUMENTO_TIPO")
+        documento_tipo = os.getenv("DOCUMENTO_TIPO_RI")
 
         return {
             "ism_nombre": ism_nombre,
@@ -238,25 +259,55 @@ class Pdf:
 
     def obtener_nombre_archivo_unico(self, presupuesto_id):
         # Nombre base del archivo
-        nombre_archivo = f"P-{presupuesto_id}.pdf"
+        nombre_archivo = f"REMISION-{presupuesto_id}.pdf"
 
         # Ruta del archivo
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        ruta_pdf = os.path.join(dir_path, "..", "presupuestos_pdf", nombre_archivo)
+        dir_pdf = os.path.join(dir_path, "../remisiones")
 
-        # Verificar si el archivo ya existe
-        if os.path.exists(ruta_pdf):
-            # Eliminar el archivo
-            os.remove(ruta_pdf)
+        # Verificar si el directorio existe, si no, crearlo
+        if not os.path.exists(dir_pdf):
+            os.makedirs(dir_pdf)
+
+        ruta_pdf = os.path.join(dir_pdf, nombre_archivo)
+
+        # Verificar si el archivo original ya existe
+        if not os.path.exists(ruta_pdf):
+            # Crear el archivo
+            with open(ruta_pdf, "w") as fp:
+                pass
+
+        # Si el archivo ya existe
+        else:
+            # Contador para identificar a los archivos que se generen cuando ya exista un archivo con el mismo nombre
+            contador = 1
+
+            # Adjuntar el consecutivo al nombre base, en caso de que ya exista el archivo pdf
+            nuevo_nombre_archivo = f"REMISION-{presupuesto_id}_({contador}).pdf"
+            nueva_ruta_pdf = os.path.join(dir_pdf, nuevo_nombre_archivo)
+
+            # Incrementar el contador hasta que se encuentre un nombre de archivo que no exista en el directorio
+            while os.path.exists(nueva_ruta_pdf):
+                contador += 1
+                nuevo_nombre_archivo = f"REMISION-{presupuesto_id}_({contador}).pdf"
+                nueva_ruta_pdf = os.path.join(dir_pdf, nuevo_nombre_archivo)
+
+            # Asignar el nuevo nombre al archivo
+            nombre_archivo = nuevo_nombre_archivo
+            ruta_pdf = nueva_ruta_pdf
 
         return nombre_archivo, ruta_pdf
 
-    def generar_pdf(self, presupuesto_id):
+
+    def r_interna(self, presupuesto_id):
         # Establecer el locale para los formatos de moneda
         locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
-
+        
         # Obtener el presupuesto
         presupuesto = PresupuestoModel.query.get(presupuesto_id)
+
+        registrar_remision(presupuesto_id)
+
         # Accede a los datos de la tabla presupuesto
         datos_presupuesto = self.datos_tabla_presupuesto(presupuesto)
 
@@ -271,14 +322,14 @@ class Pdf:
         # Nombre base del archivo
         nombre_archivo, ruta_pdf = self.obtener_nombre_archivo_unico(presupuesto_id)
 
-        doc = SimpleDocTemplate(
-            nombre_archivo,
-            pagesize=letter,
-            leftMargin=10 * mm,  # Margen izquierdo de 20 mm
-            rightMargin=10 * mm,  # Margen derecho de 20 mm
-            topMargin=5 * mm,  # Margen superior de 20 mm
-            bottomMargin=8 * mm,  # Margen inferior de 20 mm
-        )
+        # doc = SimpleDocTemplate(
+        #     nombre_archivo,
+        #     pagesize=letter,
+        #     leftMargin=10 * mm,  # Margen izquierdo de 20 mm
+        #     rightMargin=10 * mm,  # Margen derecho de 20 mm
+        #     topMargin=5 * mm,  # Margen superior de 20 mm
+        #     bottomMargin=8 * mm,  # Margen inferior de 20 mm
+        # )
 
         # Logo de la empresa
         # logo_path = "./static/img/logoEmpresa.png"
@@ -289,8 +340,8 @@ class Pdf:
 
         # Estilos
         styles = getSampleStyleSheet()
-        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=8, leading=9))
-        styles.add(ParagraphStyle(name="DescripcionStyleSmall", fontSize=8, leading=9))
+        styles.add(ParagraphStyle(name="DescripcionStyle", fontSize=6, leading=9))
+        styles.add(ParagraphStyle(name="DescripcionStyleSmall", fontSize=6, leading=9))
         styleN = styles["Normal"]
 
         # Estilo de encabezado
@@ -418,20 +469,20 @@ class Pdf:
                 "GARANTIA",
                 "",
                 "MATERIALES:",
-                "$ {:,.2f}".format(datos_presupuesto["materiales"]),
+                "$ 0.00",
                 "",
                 "SUBTOTAL:",
-                "$ {:,.2f}".format(datos_presupuesto["subtotal"]),
+                "$ 0.00",
             ],
             [
                 "1 DIA(S)",
                 "30 DIAS(S)",
                 "",
                 "MANO DE OBRA:",
-                "$ {:,.2f}".format(datos_presupuesto["mano_obra"]),
+                "$ 0.00",
                 "",
                 "IVA 8%:",
-                "$ {:,.2f}".format(datos_presupuesto["iva"]),
+                "$ 0.00",
             ],
             [
                 "",
@@ -441,7 +492,7 @@ class Pdf:
                 "",
                 "",
                 "TOTAL:",
-                "$ {:,.2f}".format(datos_presupuesto["total"]),
+                "$ 0.00",
             ],
             [
                 "",
@@ -538,7 +589,6 @@ class Pdf:
                     ("FONTSIZE", (3, 6), (3, 6), 8),
                     ("FONTNAME", (3, 6), (3, 6), "Helvetica-Bold"),
                     ("ALIGN", (7, 0), (7, 2), "RIGHT"),
-                    ("ALIGN", (6, 0), (6, 2), "RIGHT"),
                     # NEGRITA
                     ("FONTNAME", (7, 0), (7, 2), "Helvetica-Bold"),
                 ]
@@ -553,14 +603,21 @@ class Pdf:
         flowables.append(spacer)  # Agregar un espacio
         flowables.append(KeepTogether(table))  # Agregar la tabla de cotizaciones
 
-        # Calcular la altura de las tablas
-        header_table_width, header_table_height = datos_cliente.wrap(
-            doc.width, doc.height
+        # 1. Crea el objeto doc ANTES de calcular tamaños
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=letter,
+            leftMargin=10 * mm,
+            rightMargin=10 * mm,
+            topMargin=5 * mm,
+            bottomMargin=8 * mm,
         )
+
+        # Ahora sí puedes calcular los tamaños
+        header_table_width, header_table_height = datos_cliente.wrap(doc.width, doc.height)
         table_width, table_height = table.wrap(doc.width, doc.height)
-        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(
-            doc.width, doc.height
-        )
+        tabla_totales_width, tabla_totales_height = tabla_totales.wrap(doc.width, doc.height)
 
         # Calcular espacio disponible en la página actual
         remaining_space = (
@@ -573,24 +630,58 @@ class Pdf:
 
         # Agregar un salto de página a los flowables
         flowables.append(tabla_totales)
+        # doc.build(flowables)
+
+        # 1. Genera el PDF de la remisión en memoria
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=letter,
+            leftMargin=10 * mm,
+            rightMargin=10 * mm,
+            topMargin=5 * mm,
+            bottomMargin=8 * mm,
+        )
         doc.build(flowables)
+        buffer.seek(0)
 
-        os.rename(nombre_archivo, ruta_pdf)
+        # 2. Abre el PDF adicional (la hoja con la tabla)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        ruta_pdf_tabla = os.path.join(dir_path, "../static/hoja_tabla.pdf")
+        with open(ruta_pdf_tabla, "rb") as f:
+            pdf_tabla = PdfReader(f)
+            pdf_remision = PdfReader(buffer)
+            pdf_final = PdfWriter()
 
-        with open(ruta_pdf, "rb") as f:
-            pdf_data = f.read()
+            # 3. Agrega todas las páginas de la remisión
+            for page in pdf_remision.pages:
+                pdf_final.add_page(page)
+            # 4. Agrega todas las páginas del PDF adicional
+            for page in pdf_tabla.pages:
+                pdf_final.add_page(page)
 
-        # return redirect(url_for("cerrar"))
+            # 5. Guarda el PDF combinado en memoria
+            output_buffer = BytesIO()
+            pdf_final.write(output_buffer)
+            output_buffer.seek(0)
 
-        # Habilitar solo cuando ya se este trabajando con los correos
-        return redirect(
-            url_for("enviar_correo_presupuesto", presupuesto_id=presupuesto_id)
+        # --- NUEVO: Guarda una copia en el directorio "remisiones" ---
+        with open(ruta_pdf, "wb") as copia_pdf:
+            copia_pdf.write(output_buffer.getbuffer())
+        output_buffer.seek(0)  # Vuelve a poner el buffer al inicio para la descarga
+
+        # 6. Envía el PDF combinado al usuario
+        return send_file(
+            output_buffer,
+            mimetype="application/pdf",
+            as_attachment=True,
+            download_name=nombre_archivo  # Usar el nombre generado
         )
 
     def rutas(self):
         self.app.add_url_rule(
-            "/generar_pdf/<int:presupuesto_id>",
-            "generar_pdf",
-            self.generar_pdf,
+            "/r_interna/<int:presupuesto_id>",
+            "r_interna",
+            self.r_interna,
             methods=["GET", "POST"],
         )
