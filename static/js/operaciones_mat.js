@@ -52,3 +52,7 @@ function showModal(event) {
   const myModal = new bootstrap.Modal(document.getElementById('myModal'));
   myModal.show();
 }
+
+document.getElementById('precio').addEventListener('wheel', function(e){
+  e.preventDefault();
+}, {passive:false});
